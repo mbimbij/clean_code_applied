@@ -1,7 +1,6 @@
 package com.example.cleancodeapplied;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.And;
@@ -13,10 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class MyStepdefs {
 
     private ObjectMapper objectMapper = new ObjectMapper();
+    private GateKeeper gateKeeper = new GateKeeper();
+    private PresentCodecastUseCase useCase = new PresentCodecastUseCase();
 
     @Before
     public void setUp() {
@@ -28,6 +30,13 @@ public class MyStepdefs {
         return objectMapper.convertValue(entry, Codecast.class);
     }
 
+    @Given("codecasts")
+    public void codecasts(List<Codecast> codecasts) {
+        for (Codecast codecast : codecasts) {
+            Context.gateway.save(codecast);
+        }
+    }
+
     @Given("no codecasts")
     public void noCodecasts() {
         List<Codecast> codecasts = Context.gateway.findAllCodeCasts();
@@ -37,25 +46,28 @@ public class MyStepdefs {
         assertThat(Context.gateway.findAllCodeCasts()).isEmpty();
     }
 
-    @And("user U logged in")
-    public void userULoggedIn() {
-        assertThat(true).isFalse();
+    @And("user {string}")
+    public void addUser(String username) {
+        Context.gateway.save(new User(username));
     }
 
-    @Then("then the following codecasts will be presented for U")
-    public void thenTheFollowingCodecastsWillBePresentedForU() {
-        assertThat(true).isFalse();
+    @And("user {string} logged in")
+    public void userLoggedIn(String username) {
+        User user = Context.gateway.findUser(username);
+        if (user != null) {
+            gateKeeper.setLoggedInUser(user);
+        } else {
+            fail("test fixture should have created a logged in user");
+        }
     }
 
     @And("there will be no codecasts presented")
     public void thereWillBeNoCodecastsPresented() {
-        assertThat(true).isFalse();
+        assertThat(useCase.presentCodecasts(gateKeeper.getLoggedInUser())).isEmpty();
     }
 
-    @Given("codecasts")
-    public void codecasts(List<Codecast> codecasts) {
-        for (Codecast codecast : codecasts) {
-            Context.gateway.save(codecast);
-        }
+    @Then("then the following codecasts will be presented for {string}")
+    public void thenTheFollowingCodecastsWillBePresentedFor(String expectedUserName) {
+        assertThat(gateKeeper.getLoggedInUser().getUserName()).isEqualTo(expectedUserName);
     }
 }

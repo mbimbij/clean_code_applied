@@ -8,4 +8,8 @@ public interface Gateway {
     void delete(Codecast codecast);
 
     void save(Codecast codecast);
+
+    void save(User user);
+
+    User findUser(String username);
 }
