@@ -14,7 +14,7 @@ class PresentCodecastUseCaseTest {
     void setUp() {
         Context.gateway = new MockGateway();
         user = Context.gateway.save(new User("user"));
-        codecast = new Codecast();
+        codecast = Context.gateway.save(new Codecast());
         useCase = new PresentCodecastUseCase();
     }
 

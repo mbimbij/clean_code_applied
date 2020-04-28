@@ -1,6 +1,6 @@
 package com.example.cleancodeapplied;
 
-public class Licence {
+public class Licence extends Entity {
     private final User user;
     private final Codecast codecast;
 

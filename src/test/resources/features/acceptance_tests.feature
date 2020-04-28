@@ -5,7 +5,7 @@ Feature:
 
   Background:
     Given codecasts
-      | title | published  |
+      | title | publicationDate  |
       | A     | 03/01/2014 |
       | B     | 03/02/2014 |
       | C     | 02/18/2014 |

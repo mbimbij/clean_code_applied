@@ -7,7 +7,7 @@ public interface Gateway {
 
     void delete(Codecast codecast);
 
-    void save(Codecast codecast);
+    Codecast save(Codecast codecast);
 
     User save(User user);
 

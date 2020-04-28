@@ -3,11 +3,7 @@ package com.example.cleancodeapplied;
 import lombok.Data;
 
 @Data
-public class Codecast {
+public class Codecast extends Entity {
     private String title;
-    private String published;
-
-    public boolean isSame(Codecast codecast) {
-        return true;
-    }
+    private String publicationDate;
 }
