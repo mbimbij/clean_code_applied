@@ -9,7 +9,7 @@ public interface Gateway {
 
     void save(Codecast codecast);
 
-    void save(User user);
+    User save(User user);
 
     User findUser(String username);
 

@@ -30,8 +30,9 @@ public class MockGateway implements Gateway {
     }
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         users.add(establishId(user));
+        return user;
     }
 
     private User establishId(User user) {
