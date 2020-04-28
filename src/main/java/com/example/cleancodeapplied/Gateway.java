@@ -12,4 +12,10 @@ public interface Gateway {
     void save(User user);
 
     User findUser(String username);
+
+    Codecast findCodecastByTitle(String codecastTitle);
+
+    void save(Licence licence);
+
+    List<Licence> findLicencesForUserAndCodecast(User user, Codecast codecast);
 }

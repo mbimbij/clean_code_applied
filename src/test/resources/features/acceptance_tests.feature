@@ -17,10 +17,10 @@ Feature:
     And there will be no codecasts presented
 
 
-  Scenario: present viewable codecasts
+  Scenario: present viewable codecasts in chronological order
     Given user "U"
     And user "U" logged in
-    And with licence for "U" able to view "A"
+     And with licence for "U" able to view "A"
     Then then the following codecasts will be presented for "U"
       | title | picture | description | viewable | downloadable |
       | C     | C       | C           | false    | false        |
