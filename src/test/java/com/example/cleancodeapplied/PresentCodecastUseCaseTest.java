@@ -23,7 +23,7 @@ class PresentCodecastUseCaseTest {
 
     @Test
     void userWithoutViewLicence_cannotViewCodecast() {
-        assertThat(useCase.isLicencedToViewCodecast(user,codecast)).isFalse();
+        assertThat(useCase.isLicencedToViewCodecast(user, codecast)).isFalse();
     }
 
     @Test
@@ -54,5 +54,20 @@ class PresentCodecastUseCaseTest {
     void presentOneCodecast() {
         List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
         assertThat(presentableCodecasts).hasSize(1);
+    }
+
+    @Test
+    void presentedCodecastIsNotViewableIfNoLicence() {
+        List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
+        PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
+        assertThat(presentableCodecast.viewable).isFalse();
+    }
+
+    @Test
+    void presentedCodecastIsViewableIfLicenceExists() {
+        Context.gateway.save(new Licence(user, codecast));
+        List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
+        PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
+        assertThat(presentableCodecast.viewable).isTrue();
     }
 }
