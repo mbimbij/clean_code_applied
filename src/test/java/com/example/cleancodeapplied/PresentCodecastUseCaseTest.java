@@ -1,8 +1,11 @@
 package com.example.cleancodeapplied;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class PresentCodecastUseCaseTest {
 
@@ -20,14 +23,14 @@ class PresentCodecastUseCaseTest {
 
     @Test
     void userWithoutViewLicence_cannotViewCodecast() {
-        Assertions.assertThat(useCase.isLicencedToViewCodecast(user,codecast)).isFalse();
+        assertThat(useCase.isLicencedToViewCodecast(user,codecast)).isFalse();
     }
 
     @Test
     void userWithViewLicence_canViewCodecast() {
         Licence viewLicence = new Licence(user, codecast);
         Context.gateway.save(viewLicence);
-        Assertions.assertThat(useCase.isLicencedToViewCodecast(user, codecast)).isTrue();
+        assertThat(useCase.isLicencedToViewCodecast(user, codecast)).isTrue();
     }
 
     @Test
@@ -37,6 +40,19 @@ class PresentCodecastUseCaseTest {
 
         Licence viewLicence = new Licence(user, codecast);
         Context.gateway.save(viewLicence);
-        Assertions.assertThat(useCase.isLicencedToViewCodecast(otherUser, codecast)).isFalse();
+        assertThat(useCase.isLicencedToViewCodecast(otherUser, codecast)).isFalse();
+    }
+
+    @Test
+    void presentingNoCodecasts() {
+        Context.gateway.delete(codecast);
+        List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
+        assertThat(presentableCodecasts).isEmpty();
+    }
+
+    @Test
+    void presentOneCodecast() {
+        List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
+        assertThat(presentableCodecasts).hasSize(1);
     }
 }

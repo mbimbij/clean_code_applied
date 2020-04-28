@@ -66,11 +66,6 @@ public class MyStepdefs {
         assertThat(useCase.presentCodecasts(gateKeeper.getLoggedInUser())).isEmpty();
     }
 
-    @Then("then the following codecasts will be presented for {string}")
-    public void thenTheFollowingCodecastsWillBePresentedFor(String expectedUserName, List<Map<String,Object>> table) {
-        assertThat(gateKeeper.getLoggedInUser().getUserName()).isEqualTo(expectedUserName);
-    }
-
     @And("with licence for {string} able to view {string}")
     public void createLicenceForUserOnVideo(String userName, String codecastTitle) {
         User user = Context.gateway.findUser(userName);
@@ -78,5 +73,12 @@ public class MyStepdefs {
         Licence licence = new Licence(user, codecast);
         Context.gateway.save(licence);
         assertThat(useCase.isLicencedToViewCodecast(user, codecast)).isTrue() ;
+    }
+
+    @Then("then the following codecasts will be presented for {string}")
+    public void thenTheFollowingCodecastsWillBePresentedFor(String expectedUserName
+//            ,List<Map<String,Object>> table
+    ) {
+        assertThat(gateKeeper.getLoggedInUser().getUserName()).isEqualTo(expectedUserName);
     }
 }
