@@ -20,7 +20,11 @@ public class PresentCodecastUseCase {
 
     public boolean isLicencedToViewCodecast(User user, Codecast codecast) {
         List<Licence> licences = Context.gateway.findLicencesForUserAndCodecast(user, codecast);
-        return !licences.isEmpty();
+        for (Licence licence : licences) {
+            if(licence instanceof ViewLicence)
+                return true;
+        }
+        return false;
     }
 
     public boolean isLicencedToDownloadCodecast(User user, Codecast codecast) {

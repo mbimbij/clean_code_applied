@@ -81,7 +81,7 @@ public class MyStepdefs {
     public void createLicenceForUserOnVideo(String userName, String codecastTitle) {
         User user = Context.gateway.findUser(userName);
         Codecast codecast = Context.gateway.findCodecastByTitle(codecastTitle);
-        Licence licence = new Licence(user, codecast);
+        Licence licence = new ViewLicence(user, codecast);
         Context.gateway.save(licence);
         assertThat(useCase.isLicencedToViewCodecast(user, codecast)).isTrue();
     }
