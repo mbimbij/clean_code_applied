@@ -1,5 +1,6 @@
 package com.example.cleancodeapplied.socketserver;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ import java.net.Socket;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Disabled
+//@Disabled
 public class SocketServerTest {
 
     private FakeSocketService service;
@@ -17,10 +18,15 @@ public class SocketServerTest {
     private int port;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         port = 8042;
         service = new FakeSocketService();
         server = new SocketServer(port, service);
+    }
+
+    @AfterEach
+    void tearDown() throws IOException, InterruptedException {
+        server.stop();
     }
 
     @Test
@@ -30,7 +36,7 @@ public class SocketServerTest {
     }
 
     @Test
-    void canStartAndStopServer() throws IOException {
+    void canStartAndStopServer() throws IOException, InterruptedException {
         server.start();
         assertThat(server.isReady()).isTrue();
         server.stop();
@@ -38,7 +44,7 @@ public class SocketServerTest {
     }
 
     @Test
-    void acceptAnIncomingConnection() throws IOException {
+    void acceptAnIncomingConnection() throws IOException, InterruptedException {
         server.start();
         Socket socket = new Socket("localhost",port);
         server.stop();
@@ -47,5 +53,10 @@ public class SocketServerTest {
 
     public static class FakeSocketService implements SocketService {
         public int connections;
+
+        @Override
+        public void serve(Socket socket) {
+            connections++;
+        }
     }
 }
