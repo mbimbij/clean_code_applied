@@ -1,6 +1,7 @@
 package com.example.cleancodeapplied;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -15,7 +16,8 @@ public class MockGateway implements Gateway {
     }
 
     @Override
-    public List<Codecast> findAllCodeCasts() {
+    public List<Codecast> findAllCodeCastsSortedByDateAsc() {
+        codecasts.sort(Comparator.comparing(Codecast::getPublicationDate));
         return codecasts;
     }
 

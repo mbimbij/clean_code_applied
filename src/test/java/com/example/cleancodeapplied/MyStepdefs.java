@@ -12,7 +12,6 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,11 +50,11 @@ public class MyStepdefs {
 
     @Given("no codecasts")
     public void noCodecasts() {
-        List<Codecast> codecasts = Context.gateway.findAllCodeCasts();
+        List<Codecast> codecasts = Context.gateway.findAllCodeCastsSortedByDateAsc();
         for (Codecast codecast : new ArrayList<>(codecasts)) {
             Context.gateway.delete(codecast);
         }
-        assertThat(Context.gateway.findAllCodeCasts()).isEmpty();
+        assertThat(Context.gateway.findAllCodeCastsSortedByDateAsc()).isEmpty();
     }
 
     @And("user {string}")
