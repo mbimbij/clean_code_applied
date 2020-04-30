@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.example.cleancodeapplied.Licence.Type.DOWNLOADABLE;
-import static com.example.cleancodeapplied.Licence.Type.VIEWABLE;
+import static com.example.cleancodeapplied.Licence.Type.DOWNLOAD;
+import static com.example.cleancodeapplied.Licence.Type.VIEW;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -83,9 +83,9 @@ public class MyStepdefs {
     public void createLicenceForUserOnVideo(String userName, String codecastTitle) {
         User user = Context.gateway.findUser(userName);
         Codecast codecast = Context.gateway.findCodecastByTitle(codecastTitle);
-        Licence licence = new Licence(VIEWABLE, user, codecast);
+        Licence licence = new Licence(VIEW, user, codecast);
         Context.gateway.save(licence);
-        assertThat(useCase.isLicencedToViewCodecast(user, codecast)).isTrue();
+        assertThat(useCase.isLicencedFor(VIEW, user, codecast)).isTrue();
     }
 
     @Then("then the following codecasts will be presented for {string}")
@@ -124,9 +124,9 @@ public class MyStepdefs {
     public void withLicenceForAbleToDownload(String userName, String codecastTitle) {
         User user = Context.gateway.findUser(userName);
         Codecast codecast = Context.gateway.findCodecastByTitle(codecastTitle);
-        Licence licence = new Licence(DOWNLOADABLE, user, codecast);
+        Licence licence = new Licence(DOWNLOAD, user, codecast);
         Context.gateway.save(licence);
-        assertThat(useCase.isLicencedToDownloadCodecast(user, codecast)).isTrue();
+        assertThat(useCase.isLicencedFor(DOWNLOAD, user, codecast)).isTrue();
     }
 
     @ToString

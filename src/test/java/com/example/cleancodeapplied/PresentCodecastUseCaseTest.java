@@ -26,14 +26,14 @@ class PresentCodecastUseCaseTest {
 
     @Test
     void userWithoutViewLicence_cannotViewCodecast() {
-        assertThat(useCase.isLicencedToViewCodecast(user, codecast)).isFalse();
+        assertThat(useCase.isLicencedFor(VIEW, user, codecast)).isFalse();
     }
 
     @Test
     void userWithViewLicence_canViewCodecast() {
-        Licence viewLicence = new Licence(VIEWABLE, user, codecast);
+        Licence viewLicence = new Licence(VIEW, user, codecast);
         Context.gateway.save(viewLicence);
-        assertThat(useCase.isLicencedToViewCodecast(user, codecast)).isTrue();
+        assertThat(useCase.isLicencedFor(VIEW, user, codecast)).isTrue();
     }
 
     @Test
@@ -41,9 +41,9 @@ class PresentCodecastUseCaseTest {
         User otherUser = new User("otherUser");
         Context.gateway.save(otherUser);
 
-        Licence viewLicence = new Licence(VIEWABLE, user, codecast);
+        Licence viewLicence = new Licence(VIEW, user, codecast);
         Context.gateway.save(viewLicence);
-        assertThat(useCase.isLicencedToViewCodecast(otherUser, codecast)).isFalse();
+        assertThat(useCase.isLicencedFor(VIEW, otherUser, codecast)).isFalse();
     }
 
     @Test
@@ -74,7 +74,7 @@ class PresentCodecastUseCaseTest {
 
     @Test
     void presentedCodecastIsViewableIfLicenceExists() {
-        Context.gateway.save(new Licence(VIEWABLE, user, codecast));
+        Context.gateway.save(new Licence(VIEW, user, codecast));
         List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
         PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
         assertThat(presentableCodecast.viewable).isTrue();
@@ -82,7 +82,7 @@ class PresentCodecastUseCaseTest {
 
     @Test
     void presentedCodecastIsDownloadableIfDownloadLicenceExists() {
-        Licence downloadLicence = new Licence(DOWNLOADABLE, user, codecast);
+        Licence downloadLicence = new Licence(DOWNLOAD, user, codecast);
         Context.gateway.save(downloadLicence);
         List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
         PresentableCodecast presentableCodecast = presentableCodecasts.get(0);

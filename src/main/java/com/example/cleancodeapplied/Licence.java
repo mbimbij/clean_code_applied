@@ -24,6 +24,6 @@ public class Licence extends Entity {
     }
 
     public enum Type {
-        DOWNLOADABLE, VIEWABLE
+        DOWNLOAD, VIEW
     }
 }
