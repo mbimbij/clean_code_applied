@@ -1,5 +1,9 @@
 package com.example.cleancodeapplied.socketserver;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 public class SocketServer {
     private final int port;
     private final SocketService service;
@@ -18,7 +22,9 @@ public class SocketServer {
         return service;
     }
 
-    public void start() {
+    public void start() throws IOException {
+        ServerSocket serverSocket = new ServerSocket(port);
+        Socket serviceSocket = serverSocket.accept();
         running = true;
     }
 
