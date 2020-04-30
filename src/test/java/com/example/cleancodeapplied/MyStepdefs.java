@@ -1,15 +1,24 @@
 package com.example.cleancodeapplied;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import lombok.Data;
+import lombok.ToString;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -27,7 +36,10 @@ public class MyStepdefs {
 
     @DataTableType
     public Codecast codecast(Map<String, String> entry) {
-        return objectMapper.convertValue(entry, Codecast.class);
+        return new Codecast(entry.get("title"),
+                LocalDate.parse(
+                        entry.get("publicationDate"),
+                        DateTimeFormatter.ofPattern("MM/dd/yyyy")).atStartOfDay(ZoneId.systemDefault()));
     }
 
     @Given("codecasts")
@@ -72,13 +84,46 @@ public class MyStepdefs {
         Codecast codecast = Context.gateway.findCodecastByTitle(codecastTitle);
         Licence licence = new Licence(user, codecast);
         Context.gateway.save(licence);
-        assertThat(useCase.isLicencedToViewCodecast(user, codecast)).isTrue() ;
+        assertThat(useCase.isLicencedToViewCodecast(user, codecast)).isTrue();
     }
 
     @Then("then the following codecasts will be presented for {string}")
     public void thenTheFollowingCodecastsWillBePresentedFor(String expectedUserName
-//            ,List<Map<String,Object>> table
+            , DataTable expectedPresentedCodecastsInOrder
     ) {
-        assertThat(gateKeeper.getLoggedInUser().getUserName()).isEqualTo(expectedUserName);
+        List<PresentableCodecast> actuallyPresentedCodecasts = useCase.presentCodecasts(gateKeeper.getLoggedInUser());
+        DataTable dataTableActual = getPresentableCodecastAsCucumberDatatable(actuallyPresentedCodecasts);
+        expectedPresentedCodecastsInOrder.diff(dataTableActual);
+    }
+
+    private DataTable getPresentableCodecastAsCucumberDatatable(List<PresentableCodecast> actuallyPresentedCodecasts) {
+        List<List<String>> actuallyPresentedCodecastsAsList = new ArrayList<>();
+        actuallyPresentedCodecastsAsList.add(Arrays.asList("title", "viewable"));
+
+        List<List<String>> collect = actuallyPresentedCodecasts.stream()
+                .map(presentableCodecast -> Arrays.asList(
+                        presentableCodecast.title,
+                        String.valueOf(presentableCodecast.viewable)
+                        )
+                )
+                .collect(Collectors.toList());
+        actuallyPresentedCodecastsAsList.addAll(collect);
+
+        return DataTable.create(actuallyPresentedCodecastsAsList);
+    }
+
+    @DataTableType
+    public PresentedCodecastDatatable presentedCodecastDatatable(Map<String, String> entry) {
+        return objectMapper.convertValue(entry, PresentedCodecastDatatable.class);
+    }
+
+    @ToString
+    @Data
+    private static class PresentedCodecastDatatable {
+        public String title;
+        public String picture;
+        public String description;
+        public boolean viewable;
+        public boolean downloadable;
     }
 }
