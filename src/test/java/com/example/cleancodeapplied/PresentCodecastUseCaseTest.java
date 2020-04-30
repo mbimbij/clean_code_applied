@@ -7,6 +7,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static com.example.cleancodeapplied.Licence.Type.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PresentCodecastUseCaseTest {
@@ -30,7 +31,7 @@ class PresentCodecastUseCaseTest {
 
     @Test
     void userWithViewLicence_canViewCodecast() {
-        Licence viewLicence = new ViewLicence(user, codecast);
+        Licence viewLicence = new Licence(VIEWABLE, user, codecast);
         Context.gateway.save(viewLicence);
         assertThat(useCase.isLicencedToViewCodecast(user, codecast)).isTrue();
     }
@@ -40,7 +41,7 @@ class PresentCodecastUseCaseTest {
         User otherUser = new User("otherUser");
         Context.gateway.save(otherUser);
 
-        Licence viewLicence = new Licence(user, codecast);
+        Licence viewLicence = new Licence(VIEWABLE, user, codecast);
         Context.gateway.save(viewLicence);
         assertThat(useCase.isLicencedToViewCodecast(otherUser, codecast)).isFalse();
     }
@@ -73,7 +74,7 @@ class PresentCodecastUseCaseTest {
 
     @Test
     void presentedCodecastIsViewableIfLicenceExists() {
-        Context.gateway.save(new ViewLicence(user, codecast));
+        Context.gateway.save(new Licence(VIEWABLE, user, codecast));
         List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
         PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
         assertThat(presentableCodecast.viewable).isTrue();
@@ -81,7 +82,7 @@ class PresentCodecastUseCaseTest {
 
     @Test
     void presentedCodecastIsDownloadableIfDownloadLicenceExists() {
-        Licence downloadLicence = new DownloadLicence(user, codecast);
+        Licence downloadLicence = new Licence(DOWNLOADABLE, user, codecast);
         Context.gateway.save(downloadLicence);
         List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
         PresentableCodecast presentableCodecast = presentableCodecasts.get(0);

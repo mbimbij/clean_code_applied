@@ -4,6 +4,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.cleancodeapplied.Licence.Type.*;
+
 public class PresentCodecastUseCase {
     public List<PresentableCodecast> presentCodecasts(User loggedInUser) {
         return Context.gateway.findAllCodeCastsSortedByDateAsc().stream()
@@ -21,7 +23,7 @@ public class PresentCodecastUseCase {
     public boolean isLicencedToViewCodecast(User user, Codecast codecast) {
         List<Licence> licences = Context.gateway.findLicencesForUserAndCodecast(user, codecast);
         for (Licence licence : licences) {
-            if(licence instanceof ViewLicence)
+            if(licence.getType().equals(VIEWABLE))
                 return true;
         }
         return false;
@@ -30,7 +32,7 @@ public class PresentCodecastUseCase {
     public boolean isLicencedToDownloadCodecast(User user, Codecast codecast) {
         List<Licence> licences = Context.gateway.findLicencesForUserAndCodecast(user, codecast);
         for (Licence licence : licences) {
-            if(licence instanceof DownloadLicence)
+            if(licence.getType().equals(DOWNLOADABLE))
                 return true;
         }
         return false;

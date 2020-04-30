@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.example.cleancodeapplied.Licence.Type.DOWNLOADABLE;
+import static com.example.cleancodeapplied.Licence.Type.VIEWABLE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -81,7 +83,7 @@ public class MyStepdefs {
     public void createLicenceForUserOnVideo(String userName, String codecastTitle) {
         User user = Context.gateway.findUser(userName);
         Codecast codecast = Context.gateway.findCodecastByTitle(codecastTitle);
-        Licence licence = new ViewLicence(user, codecast);
+        Licence licence = new Licence(VIEWABLE, user, codecast);
         Context.gateway.save(licence);
         assertThat(useCase.isLicencedToViewCodecast(user, codecast)).isTrue();
     }
@@ -122,7 +124,7 @@ public class MyStepdefs {
     public void withLicenceForAbleToDownload(String userName, String codecastTitle) {
         User user = Context.gateway.findUser(userName);
         Codecast codecast = Context.gateway.findCodecastByTitle(codecastTitle);
-        Licence licence = new DownloadLicence(user, codecast);
+        Licence licence = new Licence(DOWNLOADABLE, user, codecast);
         Context.gateway.save(licence);
         assertThat(useCase.isLicencedToDownloadCodecast(user, codecast)).isTrue();
     }
