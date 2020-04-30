@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.example.cleancodeapplied.Licence.Type.DOWNLOAD;
-import static com.example.cleancodeapplied.Licence.Type.VIEW;
+import static com.example.cleancodeapplied.License.Type.DOWNLOAD;
+import static com.example.cleancodeapplied.License.Type.VIEW;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -32,7 +32,10 @@ public class MyStepdefs {
 
     @Before
     public void setUp() {
-        Context.gateway = new MockGateway();
+        Context.codecastGateway = new InMemoryCodecastGateway();
+        Context.licenseGateway = new InMemoryLicenseGateway();
+        Context.userGateway = new InMemoryUserGateway();
+        Context.gateKeeper = new GateKeeper();
     }
 
     @DataTableType
@@ -46,27 +49,27 @@ public class MyStepdefs {
     @Given("codecasts")
     public void codecasts(List<Codecast> codecasts) {
         for (Codecast codecast : codecasts) {
-            Context.gateway.save(codecast);
+            Context.codecastGateway.save(codecast);
         }
     }
 
     @Given("no codecasts")
     public void noCodecasts() {
-        List<Codecast> codecasts = Context.gateway.findAllCodeCastsSortedByDateAsc();
+        List<Codecast> codecasts = Context.codecastGateway.findAllCodeCastsSortedByDateAsc();
         for (Codecast codecast : new ArrayList<>(codecasts)) {
-            Context.gateway.delete(codecast);
+            Context.codecastGateway.delete(codecast);
         }
-        assertThat(Context.gateway.findAllCodeCastsSortedByDateAsc()).isEmpty();
+        assertThat(Context.codecastGateway.findAllCodeCastsSortedByDateAsc()).isEmpty();
     }
 
     @And("user {string}")
     public void addUser(String username) {
-        Context.gateway.save(new User(username));
+        Context.userGateway.save(new User(username));
     }
 
     @And("user {string} logged in")
     public void userLoggedIn(String username) {
-        User user = Context.gateway.findUser(username);
+        User user = Context.userGateway.findUserByName(username);
         if (user != null) {
             gateKeeper.setLoggedInUser(user);
         } else {
@@ -81,11 +84,11 @@ public class MyStepdefs {
 
     @And("with licence for {string} able to view {string}")
     public void createLicenceForUserOnVideo(String userName, String codecastTitle) {
-        User user = Context.gateway.findUser(userName);
-        Codecast codecast = Context.gateway.findCodecastByTitle(codecastTitle);
-        Licence licence = new Licence(VIEW, user, codecast);
-        Context.gateway.save(licence);
-        assertThat(useCase.isLicencedFor(VIEW, user, codecast)).isTrue();
+        User user = Context.userGateway.findUserByName(userName);
+        Codecast codecast = Context.codecastGateway.findCodecastByTitle(codecastTitle);
+        License licence = new License(VIEW, user, codecast);
+        Context.licenseGateway.save(licence);
+        assertThat(useCase.isLicensedFor(VIEW, user, codecast)).isTrue();
     }
 
     @Then("then the following codecasts will be presented for {string}")
@@ -105,8 +108,8 @@ public class MyStepdefs {
                 .map(presentableCodecast -> Arrays.asList(
                         presentableCodecast.title,
                         presentableCodecast.publicationDate,
-                        String.valueOf(presentableCodecast.viewable),
-                        String.valueOf(presentableCodecast.downloadable)
+                        String.valueOf(presentableCodecast.isViewable),
+                        String.valueOf(presentableCodecast.isDownloadable)
                         )
                 )
                 .collect(Collectors.toList());
@@ -122,11 +125,11 @@ public class MyStepdefs {
 
     @And("with licence for {string} able to download {string}")
     public void withLicenceForAbleToDownload(String userName, String codecastTitle) {
-        User user = Context.gateway.findUser(userName);
-        Codecast codecast = Context.gateway.findCodecastByTitle(codecastTitle);
-        Licence licence = new Licence(DOWNLOAD, user, codecast);
-        Context.gateway.save(licence);
-        assertThat(useCase.isLicencedFor(DOWNLOAD, user, codecast)).isTrue();
+        User user = Context.userGateway.findUserByName(userName);
+        Codecast codecast = Context.codecastGateway.findCodecastByTitle(codecastTitle);
+        License licence = new License(DOWNLOAD, user, codecast);
+        Context.licenseGateway.save(licence);
+        assertThat(useCase.isLicensedFor(DOWNLOAD, user, codecast)).isTrue();
     }
 
     @ToString

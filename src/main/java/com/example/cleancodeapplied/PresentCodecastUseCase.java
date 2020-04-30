@@ -4,11 +4,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.cleancodeapplied.Licence.Type.*;
+import static com.example.cleancodeapplied.License.Type.*;
 
 public class PresentCodecastUseCase {
     public List<PresentableCodecast> presentCodecasts(User loggedInUser) {
-        return Context.gateway.findAllCodeCastsSortedByDateAsc().stream()
+        return Context.codecastGateway.findAllCodeCastsSortedByDateAsc().stream()
                 .map(codecast -> formatCodecast(loggedInUser, codecast))
                 .collect(Collectors.toList());
     }
@@ -17,14 +17,14 @@ public class PresentCodecastUseCase {
         PresentableCodecast presentableCodecast = new PresentableCodecast();
         presentableCodecast.title=codecast.getTitle();
         presentableCodecast.publicationDate=codecast.getPublicationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-        presentableCodecast.viewable= isLicencedFor(VIEW, loggedInUser, codecast);
-        presentableCodecast.downloadable= isLicencedFor(DOWNLOAD, loggedInUser, codecast);
+        presentableCodecast.isViewable= isLicensedFor(VIEW, loggedInUser, codecast);
+        presentableCodecast.isDownloadable= isLicensedFor(DOWNLOAD, loggedInUser, codecast);
         return presentableCodecast;
     }
 
-    public boolean isLicencedFor(Licence.Type licenceType, User user, Codecast codecast) {
-        List<Licence> licences = Context.gateway.findLicencesForUserAndCodecast(user, codecast);
-        for (Licence licence : licences) {
+    public boolean isLicensedFor(License.Type licenceType, User user, Codecast codecast) {
+        List<License> licences = Context.licenseGateway.findLicensesForUserAndCodecast(user, codecast);
+        for (License licence : licences) {
             if (licence.getType().equals(licenceType))
                 return true;
         }
