@@ -9,7 +9,7 @@ public class InMemoryCodecastGateway extends GatewayUtilities<Codecast> implemen
   public List<Codecast> findAllCodeCastsSortedByDateAsc()
   {
     List<Codecast> sortedCodecasts = new ArrayList<Codecast>(getEntities());
-    Collections.sort(sortedCodecasts, Comparator.comparing(Codecast::getPublicationDate));
+    sortedCodecasts.sort(Comparator.comparing(Codecast::getPublicationDate));
     return sortedCodecasts;
   }
 
