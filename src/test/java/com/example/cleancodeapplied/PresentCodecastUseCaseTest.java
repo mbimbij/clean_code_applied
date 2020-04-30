@@ -78,4 +78,13 @@ class PresentCodecastUseCaseTest {
         PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
         assertThat(presentableCodecast.viewable).isTrue();
     }
+
+    @Test
+    void presentedCodecastIsDownloadableIfDownloadLicenceExists() {
+        Licence downloadLicence = new DownloadLicence(user, codecast);
+        Context.gateway.save(downloadLicence);
+        List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
+        PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
+        assertThat(presentableCodecast.downloadable).isTrue();
+    }
 }

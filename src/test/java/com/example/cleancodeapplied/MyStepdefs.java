@@ -91,18 +91,20 @@ public class MyStepdefs {
             , DataTable expectedPresentedCodecastsInOrder
     ) {
         List<PresentableCodecast> actuallyPresentedCodecasts = useCase.presentCodecasts(gateKeeper.getLoggedInUser());
-        DataTable dataTableActual = getPresentableCodecastAsCucumberDatatable(actuallyPresentedCodecasts);
-        expectedPresentedCodecastsInOrder.diff(dataTableActual);
+        DataTable actuallyPresentedCodecastsDatatable = convertToCucumberDatatable(actuallyPresentedCodecasts);
+        expectedPresentedCodecastsInOrder.diff(actuallyPresentedCodecastsDatatable);
     }
 
-    private DataTable getPresentableCodecastAsCucumberDatatable(List<PresentableCodecast> actuallyPresentedCodecasts) {
+    private DataTable convertToCucumberDatatable(List<PresentableCodecast> actuallyPresentedCodecasts) {
         List<List<String>> actuallyPresentedCodecastsAsList = new ArrayList<>();
-        actuallyPresentedCodecastsAsList.add(Arrays.asList("title", "viewable"));
+        actuallyPresentedCodecastsAsList.add(Arrays.asList("title", "publicationDate", "viewable", "downloadable"));
 
         List<List<String>> collect = actuallyPresentedCodecasts.stream()
                 .map(presentableCodecast -> Arrays.asList(
                         presentableCodecast.title,
-                        String.valueOf(presentableCodecast.viewable)
+                        presentableCodecast.publicationDate,
+                        String.valueOf(presentableCodecast.viewable),
+                        String.valueOf(presentableCodecast.downloadable)
                         )
                 )
                 .collect(Collectors.toList());
@@ -114,6 +116,15 @@ public class MyStepdefs {
     @DataTableType
     public PresentedCodecastDatatable presentedCodecastDatatable(Map<String, String> entry) {
         return objectMapper.convertValue(entry, PresentedCodecastDatatable.class);
+    }
+
+    @And("with licence for {string} able to download {string}")
+    public void withLicenceForAbleToDownload(String userName, String codecastTitle) {
+        User user = Context.gateway.findUser(userName);
+        Codecast codecast = Context.gateway.findCodecastByTitle(codecastTitle);
+        Licence licence = new DownloadLicence(user, codecast);
+        Context.gateway.save(licence);
+        assertThat(useCase.isLicencedToDownloadCodecast(user, codecast)).isTrue();
     }
 
     @ToString

@@ -16,18 +16,22 @@ Feature:
     And user "U" logged in
     And there will be no codecasts presented
 
-
   Scenario: present viewable codecasts in chronological order
     Given user "U"
     And user "U" logged in
     And with licence for "U" able to view "A"
     Then then the following codecasts will be presented for "U"
-      | title | viewable |
-      | C     | false    |
-      | A     | true     |
-      | B     | false    |
+      | title | publicationDate | viewable | downloadable |
+      | C     | 02/18/2014      | false    | false        |
+      | A     | 03/01/2014      | true     | false        |
+      | B     | 03/02/2014      | false    | false        |
 
-#      | title | picture | description | viewable | downloadable |
-#      | C     | C       | C           | false    | false        |
-#      | A     | A       | A           | true     | false        |
-#      | B     | B       | B           | false    | false        |
+  Scenario: present downloadable codecasts in chronological order
+    Given user "U"
+    And user "U" logged in
+    And with licence for "U" able to download "A"
+    Then then the following codecasts will be presented for "U"
+      | title | publicationDate | viewable | downloadable |
+      | C     | 02/18/2014      | false    | false        |
+      | A     | 03/01/2014      | false    | true         |
+      | B     | 03/02/2014      | false    | false        |

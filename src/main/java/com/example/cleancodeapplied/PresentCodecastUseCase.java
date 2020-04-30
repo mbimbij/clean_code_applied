@@ -9,9 +9,10 @@ public class PresentCodecastUseCase {
         return Context.gateway.findAllCodeCastsSortedByDateAsc().stream()
                 .map(codecast -> {
                     PresentableCodecast presentableCodecast = new PresentableCodecast();
-                    presentableCodecast.viewable=isLicencedToViewCodecast(loggedInUser,codecast);
                     presentableCodecast.title=codecast.getTitle();
                     presentableCodecast.publicationDate=codecast.getPublicationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+                    presentableCodecast.viewable=isLicencedToViewCodecast(loggedInUser,codecast);
+                    presentableCodecast.downloadable=isLicencedToDownloadCodecast(loggedInUser,codecast);
                     return presentableCodecast;
                 })
                 .collect(Collectors.toList());
@@ -20,5 +21,14 @@ public class PresentCodecastUseCase {
     public boolean isLicencedToViewCodecast(User user, Codecast codecast) {
         List<Licence> licences = Context.gateway.findLicencesForUserAndCodecast(user, codecast);
         return !licences.isEmpty();
+    }
+
+    public boolean isLicencedToDownloadCodecast(User user, Codecast codecast) {
+        List<Licence> licences = Context.gateway.findLicencesForUserAndCodecast(user, codecast);
+        for (Licence licence : licences) {
+            if(licence instanceof DownloadLicence)
+                return true;
+        }
+        return false;
     }
 }
