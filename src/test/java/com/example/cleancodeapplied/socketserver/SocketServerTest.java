@@ -51,6 +51,11 @@ public class SocketServerTest {
         assertThat(service.connections).isEqualTo(1);
     }
 
+    @Test
+    void canSendAndReceiveData() {
+
+    }
+
     public static class FakeSocketService implements SocketService {
         public int connections;
 

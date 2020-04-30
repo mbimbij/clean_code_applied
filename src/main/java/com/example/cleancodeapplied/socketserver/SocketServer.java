@@ -48,6 +48,7 @@ public class SocketServer {
     }
 
     public void stop() throws IOException, InterruptedException {
+        executor.shutdown();
         executor.awaitTermination(500, TimeUnit.MILLISECONDS);
         serverSocket.close();
         running = false;
