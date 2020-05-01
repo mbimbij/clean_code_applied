@@ -50,9 +50,9 @@ public class SocketServer {
     }
 
     public void stop() throws IOException, InterruptedException {
-        executor.shutdown();
-        executor.awaitTermination(1000, TimeUnit.MILLISECONDS);
         serverSocket.close();
         running = false;
+        executor.shutdown();
+        executor.awaitTermination(1000, TimeUnit.MILLISECONDS);
     }
 }

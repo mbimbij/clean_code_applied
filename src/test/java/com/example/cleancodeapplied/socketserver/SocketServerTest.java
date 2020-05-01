@@ -47,7 +47,7 @@ public class SocketServerTest {
     void acceptAnIncomingConnection() throws IOException, InterruptedException {
         server.start();
         new Socket("localhost", port);
-        Thread.sleep(200);
+        synchronized (service){service.wait();}
         server.stop();
         assertThat(service.connections).isEqualTo(1);
     }
@@ -56,8 +56,9 @@ public class SocketServerTest {
     void acceptMultipleIncomingConnections() throws IOException, InterruptedException {
         server.start();
         new Socket("localhost", port);
+        synchronized (service){service.wait();}
         new Socket("localhost", port);
-        Thread.sleep(200);
+        synchronized (service){service.wait();}
         server.stop();
         assertThat(service.connections).isEqualTo(2);
     }
@@ -85,11 +86,12 @@ public class SocketServerTest {
         public void serve(Socket socket) {
             this.socket=socket;
             connections++;
-//            try {
-//                socket.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            try {
+                synchronized (this){notify();}
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         private void readMessage() throws IOException {
