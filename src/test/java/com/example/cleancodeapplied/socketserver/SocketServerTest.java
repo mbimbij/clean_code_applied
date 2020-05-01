@@ -47,7 +47,9 @@ public class SocketServerTest {
     void acceptAnIncomingConnection() throws IOException, InterruptedException {
         server.start();
         new Socket("localhost", port);
-        synchronized (service){service.wait();}
+        synchronized (service) {
+            service.wait();
+        }
         server.stop();
         assertThat(service.connections).isEqualTo(1);
     }
@@ -56,24 +58,29 @@ public class SocketServerTest {
     void acceptMultipleIncomingConnections() throws IOException, InterruptedException {
         server.start();
         new Socket("localhost", port);
-        synchronized (service){service.wait();}
+        synchronized (service) {
+            service.wait();
+        }
         new Socket("localhost", port);
-        synchronized (service){service.wait();}
+        synchronized (service) {
+            service.wait();
+        }
         server.stop();
         assertThat(service.connections).isEqualTo(2);
     }
 
     @Test
     void canSendAndReceiveData() throws IOException, InterruptedException {
+        server.stop();
         ReadingSocketService readingService = new ReadingSocketService();
-        server.setService(readingService);
+        server = new SocketServer(port, readingService);
         server.start();
         Socket socket = new Socket("localhost", port);
         OutputStream outputStream = socket.getOutputStream();
         outputStream.write("hello".getBytes());
         outputStream.flush();
         outputStream.close();
-        Thread.sleep(200);
+//        Thread.sleep(200);
         readingService.readMessage();
         server.stop();
         assertThat(readingService.message).isEqualTo("hello");
@@ -86,10 +93,12 @@ public class SocketServerTest {
 
         @Override
         public void serve(Socket socket) {
-            this.socket=socket;
+            this.socket = socket;
             connections++;
             try {
-                synchronized (this){notify();}
+                synchronized (this) {
+                    notify();
+                }
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -111,7 +120,7 @@ public class SocketServerTest {
 
         @Override
         public void serve(Socket socket) {
-            this.socket=socket;
+            this.socket = socket;
             connections++;
 //            try {
 //                socket.close();

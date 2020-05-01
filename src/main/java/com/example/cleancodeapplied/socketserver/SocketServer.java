@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SocketServer {
     private final int port;
-    private SocketService service;
+    private final SocketService service;
     private boolean running;
     private ServerSocket serverSocket;
     private ExecutorService executor;
@@ -54,9 +54,5 @@ public class SocketServer {
         running = false;
         executor.shutdown();
         executor.awaitTermination(1000, TimeUnit.MILLISECONDS);
-    }
-
-    public void setService(SocketService service) {
-        this.service = service;
     }
 }
