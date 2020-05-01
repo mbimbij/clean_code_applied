@@ -13,14 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 //@Disabled
 public class SocketServerTest {
 
-    private FakeSocketService service;
+    private ClosingSocketService service;
     private SocketServer server;
     private int port;
 
     @BeforeEach
     void setUp() throws IOException {
         port = 8042;
-        service = new FakeSocketService();
+        service = new ClosingSocketService();
         server = new SocketServer(port, service);
     }
 
@@ -46,10 +46,20 @@ public class SocketServerTest {
     @Test
     void acceptAnIncomingConnection() throws IOException, InterruptedException {
         server.start();
-        Socket socket = new Socket("localhost", port);
-        socket.close();
+        new Socket("localhost", port);
+        Thread.sleep(200);
         server.stop();
         assertThat(service.connections).isEqualTo(1);
+    }
+
+    @Test
+    void acceptMultipleIncomingConnections() throws IOException, InterruptedException {
+        server.start();
+        new Socket("localhost", port);
+        new Socket("localhost", port);
+        Thread.sleep(200);
+        server.stop();
+        assertThat(service.connections).isEqualTo(2);
     }
 
     @Test
@@ -60,9 +70,34 @@ public class SocketServerTest {
         outputStream.write("hello".getBytes());
         outputStream.flush();
         outputStream.close();
+        Thread.sleep(200);
         service.readMessage();
         server.stop();
         assertThat(service.message).isEqualTo("hello");
+    }
+
+    public static class ClosingSocketService implements SocketService {
+        public int connections;
+        private String message;
+        Socket socket;
+
+        @Override
+        public void serve(Socket socket) {
+            this.socket=socket;
+            connections++;
+//            try {
+//                socket.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+        }
+
+        private void readMessage() throws IOException {
+            InputStream inputStream = socket.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            message = bufferedReader.lines().collect(Collectors.joining("\n"));
+        }
     }
 
     public static class FakeSocketService implements SocketService {

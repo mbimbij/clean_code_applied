@@ -29,11 +29,13 @@ public class SocketServer {
         return service;
     }
 
-    public void start() throws IOException {
+    public void start() throws IOException, InterruptedException {
         Runnable connectionHandler = () -> {
             try {
-                Socket serviceSocket = serverSocket.accept();
-                service.serve(serviceSocket);
+                while (running){
+                    Socket serviceSocket = serverSocket.accept();
+                    executor.execute(() -> service.serve(serviceSocket));
+                }
             } catch (IOException e) {
                 if (running)
                     e.printStackTrace();
@@ -49,7 +51,7 @@ public class SocketServer {
 
     public void stop() throws IOException, InterruptedException {
         executor.shutdown();
-        executor.awaitTermination(500, TimeUnit.MILLISECONDS);
+        executor.awaitTermination(1000, TimeUnit.MILLISECONDS);
         serverSocket.close();
         running = false;
     }
