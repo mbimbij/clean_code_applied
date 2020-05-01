@@ -65,6 +65,8 @@ public class SocketServerTest {
 
     @Test
     void canSendAndReceiveData() throws IOException, InterruptedException {
+        ReadingSocketService readingService = new ReadingSocketService();
+        server.setService(readingService);
         server.start();
         Socket socket = new Socket("localhost", port);
         OutputStream outputStream = socket.getOutputStream();
@@ -72,9 +74,9 @@ public class SocketServerTest {
         outputStream.flush();
         outputStream.close();
         Thread.sleep(200);
-        service.readMessage();
+        readingService.readMessage();
         server.stop();
-        assertThat(service.message).isEqualTo("hello");
+        assertThat(readingService.message).isEqualTo("hello");
     }
 
     public static class ClosingSocketService implements SocketService {
@@ -102,7 +104,7 @@ public class SocketServerTest {
         }
     }
 
-    public static class FakeSocketService implements SocketService {
+    public static class ReadingSocketService implements SocketService {
         public int connections;
         private String message;
         Socket socket;
@@ -111,11 +113,11 @@ public class SocketServerTest {
         public void serve(Socket socket) {
             this.socket=socket;
             connections++;
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                socket.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
 
         private void readMessage() throws IOException {
