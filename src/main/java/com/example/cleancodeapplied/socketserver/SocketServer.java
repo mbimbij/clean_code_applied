@@ -29,7 +29,7 @@ public class SocketServer {
         return service;
     }
 
-    public void start() throws IOException, InterruptedException {
+    public void start() {
         Runnable connectionHandler = () -> {
             try {
                 while (running){
@@ -42,6 +42,13 @@ public class SocketServer {
             }
         };
         executor.execute(connectionHandler);
+//        try {
+//            synchronized (service){
+//                service.wait();
+//            }
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
         running = true;
     }
 
@@ -53,6 +60,6 @@ public class SocketServer {
         serverSocket.close();
         running = false;
         executor.shutdown();
-        executor.awaitTermination(1000, TimeUnit.MILLISECONDS);
+        executor.awaitTermination(5000, TimeUnit.MILLISECONDS);
     }
 }
