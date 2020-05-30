@@ -77,24 +77,32 @@ public class SocketServerTest {
         }
 
     }
-    @Test
-    void canSendAndReceiveData() throws IOException, InterruptedException {
-        server.stop();
-        ReadingSocketService readingService = new ReadingSocketService();
-        server = new SocketServer(port, readingService);
-        server.start();
-        Socket socket = new Socket("localhost", port);
-        OutputStream outputStream = socket.getOutputStream();
-        outputStream.write("hello".getBytes());
-        outputStream.flush();
-        outputStream.close();
-        synchronized (readingService) {
-            readingService.wait();
+
+    @Nested
+    class TestsWithReadingSocketService {
+
+        private ReadingSocketService readingService;
+
+        @BeforeEach
+        void setUp() throws IOException {
+            readingService = new ReadingSocketService();
+            server = new SocketServer(port, readingService);
         }
-//        Thread.sleep(200);
-        readingService.readMessage();
-        server.stop();
-        assertThat(readingService.message).isEqualTo("hello");
+
+        @Test
+        void canSendAndReceiveData() throws IOException, InterruptedException {
+            server.start();
+            Socket socket = new Socket("localhost", port);
+            OutputStream outputStream = socket.getOutputStream();
+            outputStream.write("hello".getBytes());
+            outputStream.flush();
+            outputStream.close();
+            synchronized (readingService) {
+                readingService.wait();
+            }
+            server.stop();
+            assertThat(readingService.message).isEqualTo("hello");
+        }
     }
 
     public static class ClosingSocketService implements SocketService {
@@ -103,8 +111,8 @@ public class SocketServerTest {
 
         @Override
         public void serve(Socket socket) {
-            connections++;
             try {
+                doService();
                 synchronized (this) {
                     notify();
                 }
@@ -112,6 +120,10 @@ public class SocketServerTest {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        private void doService() {
+            connections++;
         }
     }
 
@@ -123,22 +135,24 @@ public class SocketServerTest {
         @Override
         public void serve(Socket socket) {
             this.socket = socket;
-            connections++;
-            synchronized (this) {
-                notify();
+            try {
+                doService();
+                synchronized (this) {
+                    notify();
+                }
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-//            try {
-//                socket.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
         }
 
-        private void readMessage() throws IOException {
+        private void doService() throws IOException {
+            connections++;
             InputStream inputStream = socket.getInputStream();
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             message = bufferedReader.lines().collect(Collectors.joining("\n"));
         }
+
     }
 }
