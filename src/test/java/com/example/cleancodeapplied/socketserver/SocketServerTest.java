@@ -105,48 +105,23 @@ public class SocketServerTest {
         }
     }
 
-    public static class ClosingSocketService implements SocketService {
+    public static class ClosingSocketService extends TestSocketService {
 
         public int connections;
 
         @Override
-        public void serve(Socket socket) {
-            try {
-                doService();
-                synchronized (this) {
-                    notify();
-                }
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private void doService() {
+        protected void doService() {
             connections++;
         }
     }
 
-    public static class ReadingSocketService implements SocketService {
+    public static class ReadingSocketService extends TestSocketService {
         public int connections;
         private String message;
-        Socket socket;
+
 
         @Override
-        public void serve(Socket socket) {
-            this.socket = socket;
-            try {
-                doService();
-                synchronized (this) {
-                    notify();
-                }
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private void doService() throws IOException {
+        protected void doService() throws IOException {
             connections++;
             InputStream inputStream = socket.getInputStream();
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
