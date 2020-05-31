@@ -105,10 +105,34 @@ public class SocketServerTest {
         }
     }
 
+    @Nested
+    class TestsWithEchoSocketService {
+
+        private EchoSocketService readingService;
+
+        @BeforeEach
+        void setUp() throws IOException {
+            readingService = new EchoSocketService();
+            server = new SocketServer(port, readingService);
+        }
+
+        @Test
+        void canSendAndReceiveData() throws IOException, InterruptedException {
+            server.start();
+            Socket socket = new Socket("localhost", port);
+            OutputStream outputStream = socket.getOutputStream();
+            outputStream.write("hello".getBytes());
+            outputStream.flush();
+            outputStream.close();
+            synchronized (readingService) {
+                readingService.wait();
+            }
+            server.stop();
+            assertThat(readingService.message).isEqualTo("hello");
+        }
+    }
+
     public static class ClosingSocketService extends TestSocketService {
-
-        public int connections;
-
         @Override
         protected void doService() {
             connections++;
@@ -116,9 +140,7 @@ public class SocketServerTest {
     }
 
     public static class ReadingSocketService extends TestSocketService {
-        public int connections;
         private String message;
-
 
         @Override
         protected void doService() throws IOException {
@@ -128,6 +150,12 @@ public class SocketServerTest {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             message = bufferedReader.lines().collect(Collectors.joining("\n"));
         }
+    }
 
+    public static class EchoSocketService extends TestSocketService {
+        @Override
+        protected void doService() throws IOException {
+            ...
+        }
     }
 }

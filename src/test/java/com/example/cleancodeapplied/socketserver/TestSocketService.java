@@ -5,6 +5,7 @@ import java.net.Socket;
 
 public abstract class TestSocketService implements SocketService {
     protected Socket socket;
+    protected int connections;
 
     @Override
     public void serve(Socket socket) {
