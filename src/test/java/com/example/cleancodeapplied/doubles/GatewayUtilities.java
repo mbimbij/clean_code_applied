@@ -1,4 +1,6 @@
-package com.example.cleancodeapplied;
+package com.example.cleancodeapplied.doubles;
+
+import com.example.cleancodeapplied.Entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

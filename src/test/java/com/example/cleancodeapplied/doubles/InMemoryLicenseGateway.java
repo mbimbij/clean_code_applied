@@ -1,4 +1,9 @@
-package com.example.cleancodeapplied;
+package com.example.cleancodeapplied.doubles;
+
+import com.example.cleancodeapplied.Codecast;
+import com.example.cleancodeapplied.License;
+import com.example.cleancodeapplied.LicenseGateway;
+import com.example.cleancodeapplied.User;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,8 @@
 package com.example.cleancodeapplied;
 
+import com.example.cleancodeapplied.doubles.InMemoryCodecastGateway;
+import com.example.cleancodeapplied.doubles.InMemoryLicenseGateway;
+import com.example.cleancodeapplied.doubles.InMemoryUserGateway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

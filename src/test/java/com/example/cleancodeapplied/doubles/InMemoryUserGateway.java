@@ -1,4 +1,7 @@
-package com.example.cleancodeapplied;
+package com.example.cleancodeapplied.doubles;
+
+import com.example.cleancodeapplied.User;
+import com.example.cleancodeapplied.UserGateway;
 
 public class InMemoryUserGateway extends GatewayUtilities<User> implements UserGateway {
   public User findUserByName(String username) {

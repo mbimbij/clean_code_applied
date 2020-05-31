@@ -1,5 +1,8 @@
 package com.example.cleancodeapplied;
 
+import com.example.cleancodeapplied.doubles.InMemoryCodecastGateway;
+import com.example.cleancodeapplied.doubles.InMemoryLicenseGateway;
+import com.example.cleancodeapplied.doubles.InMemoryUserGateway;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;

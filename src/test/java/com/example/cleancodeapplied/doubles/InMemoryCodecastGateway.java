@@ -1,7 +1,9 @@
-package com.example.cleancodeapplied;
+package com.example.cleancodeapplied.doubles;
+
+import com.example.cleancodeapplied.Codecast;
+import com.example.cleancodeapplied.CodecastGateway;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
