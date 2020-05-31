@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -108,27 +109,33 @@ public class SocketServerTest {
     @Nested
     class TestsWithEchoSocketService {
 
-        private EchoSocketService readingService;
+        private EchoSocketService echoService;
 
         @BeforeEach
         void setUp() throws IOException {
-            readingService = new EchoSocketService();
-            server = new SocketServer(port, readingService);
+            echoService = new EchoSocketService();
+            server = new SocketServer(port, echoService);
+        }
+
+        @AfterEach
+        void tearDown() throws IOException, InterruptedException {
+            server.stop();
         }
 
         @Test
-        void canSendAndReceiveData() throws IOException, InterruptedException {
+        void canEcho() throws IOException, InterruptedException {
             server.start();
             Socket socket = new Socket("localhost", port);
             OutputStream outputStream = socket.getOutputStream();
-            outputStream.write("hello".getBytes());
+            outputStream.write("echo\n".getBytes(StandardCharsets.UTF_8));
             outputStream.flush();
-            outputStream.close();
-            synchronized (readingService) {
-                readingService.wait();
-            }
-            server.stop();
-            assertThat(readingService.message).isEqualTo("hello");
+//            synchronized (echoService){
+//                echoService.wait();
+//            }
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String response = bufferedReader.lines().collect(Collectors.joining("\n"));
+
+            assertThat(response).isEqualTo("echo");
         }
     }
 
@@ -155,7 +162,15 @@ public class SocketServerTest {
     public static class EchoSocketService extends TestSocketService {
         @Override
         protected void doService() throws IOException {
-            ...
+            InputStream inputStream = socket.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+//            String message = bufferedReader.lines().collect(Collectors.joining("\n"));
+            String message = bufferedReader.readLine();
+
+            OutputStream outputStream = socket.getOutputStream();
+            outputStream.write(message.getBytes());
+            outputStream.flush();
         }
     }
 }

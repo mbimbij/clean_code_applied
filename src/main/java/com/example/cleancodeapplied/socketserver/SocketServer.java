@@ -42,13 +42,6 @@ public class SocketServer {
             }
         };
         executor.execute(connectionHandler);
-//        try {
-//            synchronized (service){
-//                service.wait();
-//            }
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
         running = true;
     }
 
