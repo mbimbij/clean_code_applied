@@ -35,10 +35,7 @@ public class MyStepdefs {
 
     @Before
     public void setUp() {
-        Context.codecastGateway = new InMemoryCodecastGateway();
-        Context.licenseGateway = new InMemoryLicenseGateway();
-        Context.userGateway = new InMemoryUserGateway();
-        Context.gateKeeper = new GateKeeper();
+        TestSetup.setupContext();
     }
 
     @DataTableType

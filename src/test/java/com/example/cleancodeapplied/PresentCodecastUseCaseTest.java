@@ -1,8 +1,5 @@
 package com.example.cleancodeapplied;
 
-import com.example.cleancodeapplied.doubles.InMemoryCodecastGateway;
-import com.example.cleancodeapplied.doubles.InMemoryLicenseGateway;
-import com.example.cleancodeapplied.doubles.InMemoryUserGateway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,10 +18,7 @@ class PresentCodecastUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        Context.codecastGateway = new InMemoryCodecastGateway();
-        Context.licenseGateway = new InMemoryLicenseGateway();
-        Context.userGateway = new InMemoryUserGateway();
-        Context.gateKeeper = new GateKeeper();
+        TestSetup.setupContext();
         user = Context.userGateway.save(new User("user"));
         codecast = Context.codecastGateway.save(new Codecast("codecast",ZonedDateTime.now()));
         useCase = new PresentCodecastUseCase();
