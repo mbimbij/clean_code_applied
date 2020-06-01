@@ -16,11 +16,11 @@ public class CodecastSummaryUseCase {
 
     private PresentableCodecastSummary formatCodecast(User loggedInUser, Codecast codecast) {
         PresentableCodecastSummary presentableCodecast = new PresentableCodecastSummary();
-        doFormatCodecast(loggedInUser, codecast, presentableCodecast);
+        formatSummaryFields(loggedInUser, codecast, presentableCodecast);
         return presentableCodecast;
     }
 
-    public static void doFormatCodecast(User loggedInUser, Codecast codecast, PresentableCodecastSummary presentableCodecast) {
+    public static void formatSummaryFields(User loggedInUser, Codecast codecast, PresentableCodecastSummary presentableCodecast) {
         presentableCodecast.title=codecast.getTitle();
         presentableCodecast.publicationDate=codecast.getPublicationDate().format(Utils.DATE_FORMAT);
         presentableCodecast.isViewable= isLicensedFor(VIEW, loggedInUser, codecast);
