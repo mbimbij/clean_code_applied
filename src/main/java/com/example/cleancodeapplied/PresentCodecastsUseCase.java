@@ -16,14 +16,18 @@ public class PresentCodecastsUseCase {
 
     private PresentableCodecast formatCodecast(User loggedInUser, Codecast codecast) {
         PresentableCodecast presentableCodecast = new PresentableCodecast();
+        doFormatCodecast(loggedInUser, codecast, presentableCodecast);
+        return presentableCodecast;
+    }
+
+    public static void doFormatCodecast(User loggedInUser, Codecast codecast, PresentableCodecast presentableCodecast) {
         presentableCodecast.title=codecast.getTitle();
         presentableCodecast.publicationDate=codecast.getPublicationDate().format(Utils.DATE_FORMAT);
         presentableCodecast.isViewable= isLicensedFor(VIEW, loggedInUser, codecast);
         presentableCodecast.isDownloadable= isLicensedFor(DOWNLOAD, loggedInUser, codecast);
-        return presentableCodecast;
     }
 
-    public boolean isLicensedFor(License.Type licenceType, User user, Codecast codecast) {
+    public static boolean isLicensedFor(License.Type licenceType, User user, Codecast codecast) {
         List<License> licences = Context.licenseGateway.findLicensesForUserAndCodecast(user, codecast);
         for (License licence : licences) {
             if (licence.getType().equals(licenceType))
