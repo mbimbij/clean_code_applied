@@ -30,5 +30,6 @@ public class TestSetup {
         License bobEpisode2 = new License(VIEW, bob, episode2);
 
         Context.userGateway.save(bob);
+        Context.userGateway.save(micah);
     }
 }
