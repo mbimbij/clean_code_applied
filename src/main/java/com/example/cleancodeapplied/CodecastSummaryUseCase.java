@@ -6,21 +6,21 @@ import java.util.stream.Collectors;
 import static com.example.cleancodeapplied.License.Type.DOWNLOAD;
 import static com.example.cleancodeapplied.License.Type.VIEW;
 
-public class PresentCodecastsUseCase {
+public class CodecastSummaryUseCase {
 
-    public List<PresentableCodecast> presentCodecasts(User loggedInUser) {
+    public List<PresentableCodecastSummary> presentCodecasts(User loggedInUser) {
         return Context.codecastGateway.findAllCodeCastsSortedByDateAsc().stream()
                 .map(codecast -> formatCodecast(loggedInUser, codecast))
                 .collect(Collectors.toList());
     }
 
-    private PresentableCodecast formatCodecast(User loggedInUser, Codecast codecast) {
-        PresentableCodecast presentableCodecast = new PresentableCodecast();
+    private PresentableCodecastSummary formatCodecast(User loggedInUser, Codecast codecast) {
+        PresentableCodecastSummary presentableCodecast = new PresentableCodecastSummary();
         doFormatCodecast(loggedInUser, codecast, presentableCodecast);
         return presentableCodecast;
     }
 
-    public static void doFormatCodecast(User loggedInUser, Codecast codecast, PresentableCodecast presentableCodecast) {
+    public static void doFormatCodecast(User loggedInUser, Codecast codecast, PresentableCodecastSummary presentableCodecast) {
         presentableCodecast.title=codecast.getTitle();
         presentableCodecast.publicationDate=codecast.getPublicationDate().format(Utils.DATE_FORMAT);
         presentableCodecast.isViewable= isLicensedFor(VIEW, loggedInUser, codecast);

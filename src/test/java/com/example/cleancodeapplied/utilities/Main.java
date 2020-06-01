@@ -42,14 +42,14 @@ public class Main {
 
     private String getFrontPage() throws Exception {
 
-        PresentCodecastsUseCase useCase = new PresentCodecastsUseCase();
+        CodecastSummaryUseCase useCase = new CodecastSummaryUseCase();
         User micah = Context.userGateway.findUserByName("Micah");
-        List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(micah);
+        List<PresentableCodecastSummary> presentableCodecasts = useCase.presentCodecasts(micah);
 
         ViewTemplate frontpageTemplate = ViewTemplate.fromClasspathResource("html/frontpage.html");
 
         StringBuilder codecastLines = new StringBuilder();
-        for (PresentableCodecast presentableCodecast : presentableCodecasts){
+        for (PresentableCodecastSummary presentableCodecast : presentableCodecasts){
             ViewTemplate codecastTemplate = ViewTemplate.fromClasspathResource("html/codecast.html");
             codecastTemplate.replace("title", presentableCodecast.title);
             codecastTemplate.replace("publicationDate", presentableCodecast.publicationDate);

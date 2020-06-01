@@ -1,4 +1,4 @@
 package com.example.cleancodeapplied;
 
-public class PresentableCodecastDetails extends PresentableCodecast {
+public class PresentableCodecastDetails extends PresentableCodecastSummary {
 }

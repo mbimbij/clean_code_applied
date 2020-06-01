@@ -10,18 +10,18 @@ import static com.example.cleancodeapplied.License.Type.DOWNLOAD;
 import static com.example.cleancodeapplied.License.Type.VIEW;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PresentCodecastsUseCaseTest {
+class CodecastSummaryUseCaseTest {
 
     private User user;
     private Codecast codecast;
-    private PresentCodecastsUseCase useCase;
+    private CodecastSummaryUseCase useCase;
 
     @BeforeEach
     void setUp() {
         TestSetup.setupContext();
         user = Context.userGateway.save(new User("user"));
         codecast = Context.codecastGateway.save(new Codecast("codecast",ZonedDateTime.now(), null));
-        useCase = new PresentCodecastsUseCase();
+        useCase = new CodecastSummaryUseCase();
     }
 
     @Test
@@ -49,7 +49,7 @@ class PresentCodecastsUseCaseTest {
     @Test
     void presentingNoCodecasts() {
         Context.codecastGateway.delete(codecast);
-        List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
+        List<PresentableCodecastSummary> presentableCodecasts = useCase.presentCodecasts(user);
         assertThat(presentableCodecasts).isEmpty();
     }
 
@@ -59,8 +59,8 @@ class PresentCodecastsUseCaseTest {
         ZonedDateTime publicationDate = ZonedDateTime.now().plusDays(1);
         codecast.setPublicationDate(publicationDate);
         Context.codecastGateway.save(codecast);
-        List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
-        PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
+        List<PresentableCodecastSummary> presentableCodecasts = useCase.presentCodecasts(user);
+        PresentableCodecastSummary presentableCodecast = presentableCodecasts.get(0);
         assertThat(presentableCodecast.title).isEqualTo("some title");
         assertThat(presentableCodecast.publicationDate).isEqualTo(publicationDate.format(Utils.DATE_FORMAT));
         assertThat(presentableCodecasts).hasSize(1);
@@ -68,16 +68,16 @@ class PresentCodecastsUseCaseTest {
 
     @Test
     void presentedCodecastIsNotViewableIfNoLicence() {
-        List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
-        PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
+        List<PresentableCodecastSummary> presentableCodecasts = useCase.presentCodecasts(user);
+        PresentableCodecastSummary presentableCodecast = presentableCodecasts.get(0);
         assertThat(presentableCodecast.isViewable).isFalse();
     }
 
     @Test
     void presentedCodecastIsViewableIfLicenceExists() {
         Context.licenseGateway.save(new License(VIEW, user, codecast));
-        List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
-        PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
+        List<PresentableCodecastSummary> presentableCodecasts = useCase.presentCodecasts(user);
+        PresentableCodecastSummary presentableCodecast = presentableCodecasts.get(0);
         assertThat(presentableCodecast.isViewable).isTrue();
     }
 
@@ -85,8 +85,8 @@ class PresentCodecastsUseCaseTest {
     void presentedCodecastIsDownloadableIfDownloadLicenceExists() {
         License downloadLicence = new License(DOWNLOAD, user, codecast);
         Context.licenseGateway.save(downloadLicence);
-        List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
-        PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
+        List<PresentableCodecastSummary> presentableCodecasts = useCase.presentCodecasts(user);
+        PresentableCodecastSummary presentableCodecast = presentableCodecasts.get(0);
         assertThat(presentableCodecast.isDownloadable).isTrue();
         assertThat(presentableCodecast.isViewable).isFalse();
     }
