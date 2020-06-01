@@ -10,4 +10,5 @@ import java.time.ZonedDateTime;
 public class Codecast extends Entity {
     private String title;
     private ZonedDateTime publicationDate;
+    private String permalink;
 }

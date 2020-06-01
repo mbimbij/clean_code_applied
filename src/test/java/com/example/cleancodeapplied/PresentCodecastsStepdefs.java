@@ -1,8 +1,5 @@
 package com.example.cleancodeapplied;
 
-import com.example.cleancodeapplied.doubles.InMemoryCodecastGateway;
-import com.example.cleancodeapplied.doubles.InMemoryLicenseGateway;
-import com.example.cleancodeapplied.doubles.InMemoryUserGateway;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
@@ -13,9 +10,6 @@ import io.cucumber.java.en.Then;
 import lombok.Data;
 import lombok.ToString;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,31 +21,16 @@ import static com.example.cleancodeapplied.License.Type.VIEW;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-public class MyStepdefs {
-
+public class PresentCodecastsStepdefs {
     private ObjectMapper objectMapper = new ObjectMapper();
     private GateKeeper gateKeeper = new GateKeeper();
-    private PresentCodecastUseCase useCase = new PresentCodecastUseCase();
+    private PresentCodecastsUseCase useCase = new PresentCodecastsUseCase();
 
     @Before
     public void setUp() {
         TestSetup.setupContext();
     }
 
-    @DataTableType
-    public Codecast codecast(Map<String, String> entry) {
-        return new Codecast(entry.get("title"),
-                LocalDate.parse(
-                        entry.get("publicationDate"),
-                        DateTimeFormatter.ofPattern("MM/dd/yyyy")).atStartOfDay(ZoneId.systemDefault()));
-    }
-
-    @Given("codecasts")
-    public void codecasts(List<Codecast> codecasts) {
-        for (Codecast codecast : codecasts) {
-            Context.codecastGateway.save(codecast);
-        }
-    }
 
     @Given("no codecasts")
     public void noCodecasts() {
@@ -118,11 +97,6 @@ public class MyStepdefs {
         return DataTable.create(actuallyPresentedCodecastsAsList);
     }
 
-    @DataTableType
-    public PresentedCodecastDatatable presentedCodecastDatatable(Map<String, String> entry) {
-        return objectMapper.convertValue(entry, PresentedCodecastDatatable.class);
-    }
-
     @And("with licence for {string} able to download {string}")
     public void withLicenceForAbleToDownload(String userName, String codecastTitle) {
         User user = Context.userGateway.findUserByName(userName);
@@ -132,13 +106,19 @@ public class MyStepdefs {
         assertThat(useCase.isLicensedFor(DOWNLOAD, user, codecast)).isTrue();
     }
 
+    @DataTableType
+    public PresentedCodecastDatatable presentedCodecastDatatable(Map<String, String> entry) {
+        return objectMapper.convertValue(entry, PresentedCodecastDatatable.class);
+    }
+
     @ToString
     @Data
-    private static class PresentedCodecastDatatable {
+    public static class PresentedCodecastDatatable {
         public String title;
         public String picture;
         public String description;
         public boolean viewable;
         public boolean downloadable;
     }
+
 }

@@ -1,20 +1,20 @@
 package com.example.cleancodeapplied.utilities;
 
-import com.example.cleancodeapplied.PresentCodecastUseCase;
-import com.example.cleancodeapplied.TestSetup;
+import com.example.cleancodeapplied.*;
 import com.example.cleancodeapplied.socketserver.SocketServer;
 import com.example.cleancodeapplied.socketserver.SocketService;
 import com.example.cleancodeapplied.view.ViewTemplate;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 
 public class Main {
     private SocketServer server;
 
     public static void main(String[] args) throws IOException {
-        TestSetup.setupContext();
+        TestSetup.setupSampleData();
         Main main = new Main();
     }
 
@@ -42,14 +42,26 @@ public class Main {
 
     private String getFrontPage() throws Exception {
 
-//        PresentCodecastUseCase useCase =
+        PresentCodecastsUseCase useCase = new PresentCodecastsUseCase();
+        User micah = Context.userGateway.findUserByName("Micah");
+        List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(micah);
 
         ViewTemplate frontpageTemplate = ViewTemplate.fromClasspathResource("html/frontpage.html");
-        ViewTemplate codecastTemplate = ViewTemplate.fromClasspathResource("html/codecast.html");
 
-        codecastTemplate.replace("title", "Episode 1: The Beginning!");
+        StringBuilder codecastLines = new StringBuilder();
+        for (PresentableCodecast presentableCodecast : presentableCodecasts){
+            ViewTemplate codecastTemplate = ViewTemplate.fromClasspathResource("html/codecast.html");
+            codecastTemplate.replace("title", presentableCodecast.title);
+            codecastTemplate.replace("publicationDate", presentableCodecast.publicationDate);
+            codecastTemplate.replace("thumbnail", "https://cleancoders.com/images/portraits/robert-martin.jpg");
+            codecastTemplate.replace("author", "Uncle Bob");
+            codecastTemplate.replace("duration", "1:00:00");
+            codecastTemplate.replace("licenseOptions", "buying options go here");
+            codecastTemplate.replace("contentActions", "");
+            codecastLines.append(codecastTemplate.getHtml());
+        }
 
-        frontpageTemplate.replace("codecasts", codecastTemplate.getHtml());
+        frontpageTemplate.replace("codecasts", codecastLines.toString());
         return frontpageTemplate.getHtml();
     }
 

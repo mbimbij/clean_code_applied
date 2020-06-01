@@ -1,6 +1,9 @@
 <tr>
     <td>
-        <a href="/episode/${permalink}/show"><img class="thumbnail" src="${thumbnail}"></a>
+        <a href="/episode/${permalink}/show">
+            <img style="width: 100px; height: 100px" class="thumbnail" src="${thumbnail}">
+        </a>
+        <div style="text-align: center">${author}</div>
     </td>
     <td>
         <a class="title" href="/episode/${permalink}/show">${title}</a>
@@ -15,8 +18,8 @@
     <td>
         <div class="right-side">
             <div class="licenses">
-                <h3 class="licenses-title">Add to Cart<span class="licenses-title-button"></span></h3>
-
+                <div>Add to Cart</div>
+                <hr/>
                 <div class="licenses-group">
                     <table class="license-opts">
                         ${licenseOptions}

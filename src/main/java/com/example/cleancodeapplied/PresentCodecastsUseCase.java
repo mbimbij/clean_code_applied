@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import static com.example.cleancodeapplied.License.Type.*;
 
-public class PresentCodecastUseCase {
+public class PresentCodecastsUseCase {
     public List<PresentableCodecast> presentCodecasts(User loggedInUser) {
         return Context.codecastGateway.findAllCodeCastsSortedByDateAsc().stream()
                 .map(codecast -> formatCodecast(loggedInUser, codecast))

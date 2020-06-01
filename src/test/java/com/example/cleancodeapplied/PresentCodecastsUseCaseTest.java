@@ -10,18 +10,18 @@ import java.util.List;
 import static com.example.cleancodeapplied.License.Type.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PresentCodecastUseCaseTest {
+class PresentCodecastsUseCaseTest {
 
     private User user;
     private Codecast codecast;
-    private PresentCodecastUseCase useCase;
+    private PresentCodecastsUseCase useCase;
 
     @BeforeEach
     void setUp() {
         TestSetup.setupContext();
         user = Context.userGateway.save(new User("user"));
-        codecast = Context.codecastGateway.save(new Codecast("codecast",ZonedDateTime.now()));
-        useCase = new PresentCodecastUseCase();
+        codecast = Context.codecastGateway.save(new Codecast("codecast",ZonedDateTime.now(), null));
+        useCase = new PresentCodecastsUseCase();
     }
 
     @Test
