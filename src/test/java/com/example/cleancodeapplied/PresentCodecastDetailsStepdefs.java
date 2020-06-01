@@ -1,6 +1,7 @@
 package com.example.cleancodeapplied;
 
 import io.cucumber.java.DataTableType;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -36,5 +37,13 @@ public class PresentCodecastDetailsStepdefs {
         presentableCodecastDetails.title = entry.get("title");
         presentableCodecastDetails.publicationDate = entry.get("publicationDate");
         return presentableCodecastDetails;
+    }
+
+    @And("with option to purchase {string} license")
+    public void withOptionToPurchaseViewingLicense(String licenseTypeName) {
+        License.Type licenceType = License.Type.valueOf(licenseTypeName);
+        assertThat((licenceType.equals(License.Type.VIEW) && !actualCodecastDetails.isViewable) ||
+                        (licenceType.equals(License.Type.DOWNLOAD) && !actualCodecastDetails.isDownloadable))
+                .isTrue();
     }
 }

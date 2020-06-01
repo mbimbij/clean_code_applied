@@ -11,8 +11,9 @@ Feature:
   Scenario: present show episode
     Given user "U"
     And user "U" logged in
-    And with licence for "U" able to view "A"
     When the user requests for episode "episode-1"
     Then then the presented title is
       | title | publicationDate |
       | A     | 03/01/2014      |
+    And with option to purchase "VIEW" license
+    And with option to purchase "DOWNLOAD" license
