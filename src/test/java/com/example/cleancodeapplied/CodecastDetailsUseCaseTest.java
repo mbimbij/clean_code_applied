@@ -8,7 +8,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class CodecastDetailsUseCaseTest {
 
@@ -34,5 +34,13 @@ class CodecastDetailsUseCaseTest {
 
         assertThat(codecastDetails.title).isEqualTo(title);
         assertThat(codecastDetails.publicationDate).isEqualTo(expectedDate);
+    }
+
+    @Test
+    void doesntCrashOnMissingCodecast() {
+        CodecastDetailsUseCase useCase = new CodecastDetailsUseCase();
+//        assertThatThrownBy(() -> useCase.getCodecastDetails(user, "missing")).doesNotThrowAnyException();
+        PresentableCodecastDetails codecastDetails = useCase.getCodecastDetails(user, "missing");
+        assertThat(codecastDetails.wasFound).isFalse();
     }
 }
