@@ -1,10 +1,10 @@
 package com.example.cleancodeapplied;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.cleancodeapplied.License.Type.*;
+import static com.example.cleancodeapplied.License.Type.DOWNLOAD;
+import static com.example.cleancodeapplied.License.Type.VIEW;
 
 public class PresentCodecastsUseCase {
 

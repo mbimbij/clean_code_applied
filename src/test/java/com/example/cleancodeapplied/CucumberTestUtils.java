@@ -3,12 +3,9 @@ package com.example.cleancodeapplied;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.Given;
-import lombok.Data;
-import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 

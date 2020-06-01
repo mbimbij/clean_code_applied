@@ -1,7 +1,5 @@
 package com.example.cleancodeapplied;
 
-import java.time.format.DateTimeFormatter;
-
 public class CodecastDetailsUseCase {
 
 

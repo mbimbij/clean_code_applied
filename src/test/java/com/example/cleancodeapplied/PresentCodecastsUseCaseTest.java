@@ -4,10 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.example.cleancodeapplied.License.Type.*;
+import static com.example.cleancodeapplied.License.Type.DOWNLOAD;
+import static com.example.cleancodeapplied.License.Type.VIEW;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PresentCodecastsUseCaseTest {
