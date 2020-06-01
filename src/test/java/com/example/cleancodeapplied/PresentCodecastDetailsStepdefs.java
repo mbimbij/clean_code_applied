@@ -23,7 +23,10 @@ public class PresentCodecastDetailsStepdefs {
     public void thenThePresentedTitleIs(List<PresentableCodecastDetails> presentableCodecastDetails) {
         assert presentableCodecastDetails.size() == 1;
         PresentableCodecastDetails expectedCodecastDetails = presentableCodecastDetails.get(0);
-        assertThat(actualCodecastDetails).isEqualToComparingFieldByField(expectedCodecastDetails);
+        assertThat(actualCodecastDetails).isEqualToComparingOnlyGivenFields(
+                expectedCodecastDetails,
+                "title",
+                "publicationDate");
 
     }
 

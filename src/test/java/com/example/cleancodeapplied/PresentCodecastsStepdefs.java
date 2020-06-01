@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class PresentCodecastsStepdefs {
     private ObjectMapper objectMapper = new ObjectMapper();
-    private GateKeeper gateKeeper = new GateKeeper();
     private PresentCodecastsUseCase useCase = new PresentCodecastsUseCase();
 
     @Before
@@ -50,7 +49,7 @@ public class PresentCodecastsStepdefs {
     public void userLoggedIn(String username) {
         User user = Context.userGateway.findUserByName(username);
         if (user != null) {
-            gateKeeper.setLoggedInUser(user);
+            Context.gateKeeper.setLoggedInUser(user);
         } else {
             fail("test fixture should have created a logged in user");
         }
@@ -58,7 +57,7 @@ public class PresentCodecastsStepdefs {
 
     @And("there will be no codecasts presented")
     public void thereWillBeNoCodecastsPresented() {
-        assertThat(useCase.presentCodecasts(gateKeeper.getLoggedInUser())).isEmpty();
+        assertThat(useCase.presentCodecasts(Context.gateKeeper.getLoggedInUser())).isEmpty();
     }
 
     @And("with licence for {string} able to view {string}")
@@ -74,7 +73,7 @@ public class PresentCodecastsStepdefs {
     public void thenTheFollowingCodecastsWillBePresentedFor(String expectedUserName
             , DataTable expectedPresentedCodecastsInOrder
     ) {
-        List<PresentableCodecast> actuallyPresentedCodecasts = useCase.presentCodecasts(gateKeeper.getLoggedInUser());
+        List<PresentableCodecast> actuallyPresentedCodecasts = useCase.presentCodecasts(Context.gateKeeper.getLoggedInUser());
         DataTable actuallyPresentedCodecastsDatatable = convertToCucumberDatatable(actuallyPresentedCodecasts);
         expectedPresentedCodecastsInOrder.diff(actuallyPresentedCodecastsDatatable);
     }
