@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import static com.example.cleancodeapplied.License.Type.*;
 
 public class PresentCodecastsUseCase {
+
     public List<PresentableCodecast> presentCodecasts(User loggedInUser) {
         return Context.codecastGateway.findAllCodeCastsSortedByDateAsc().stream()
                 .map(codecast -> formatCodecast(loggedInUser, codecast))
@@ -16,7 +17,7 @@ public class PresentCodecastsUseCase {
     private PresentableCodecast formatCodecast(User loggedInUser, Codecast codecast) {
         PresentableCodecast presentableCodecast = new PresentableCodecast();
         presentableCodecast.title=codecast.getTitle();
-        presentableCodecast.publicationDate=codecast.getPublicationDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        presentableCodecast.publicationDate=codecast.getPublicationDate().format(Utils.DATE_FORMAT);
         presentableCodecast.isViewable= isLicensedFor(VIEW, loggedInUser, codecast);
         presentableCodecast.isDownloadable= isLicensedFor(DOWNLOAD, loggedInUser, codecast);
         return presentableCodecast;

@@ -6,9 +6,9 @@ Feature:
   Background:
     Given codecasts
       | title | publicationDate |
-      | A     | 03/01/2014      |
-      | B     | 03/02/2014      |
-      | C     | 02/18/2014      |
+      | A     | 01/03/2014      |
+      | B     | 02/03/2014      |
+      | C     | 18/02/2014      |
 
   Scenario: no codecasts
     Given no codecasts
@@ -22,9 +22,9 @@ Feature:
     And with licence for "U" able to view "A"
     Then then the following codecasts will be presented for "U"
       | title | publicationDate | viewable | downloadable |
-      | C     | 02/18/2014      | false    | false        |
-      | A     | 03/01/2014      | true     | false        |
-      | B     | 03/02/2014      | false    | false        |
+      | C     | 18/02/2014      | false    | false        |
+      | A     | 01/03/2014      | true     | false        |
+      | B     | 02/03/2014      | false    | false        |
 
   Scenario: present downloadable codecasts in chronological order
     Given user "U"
@@ -32,6 +32,6 @@ Feature:
     And with licence for "U" able to download "A"
     Then then the following codecasts will be presented for "U"
       | title | publicationDate | viewable | downloadable |
-      | C     | 02/18/2014      | false    | false        |
-      | A     | 03/01/2014      | false    | true         |
-      | B     | 03/02/2014      | false    | false        |
+      | C     | 18/02/2014      | false    | false        |
+      | A     | 01/03/2014      | false    | true         |
+      | B     | 02/03/2014      | false    | false        |

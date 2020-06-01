@@ -62,7 +62,7 @@ class PresentCodecastsUseCaseTest {
         List<PresentableCodecast> presentableCodecasts = useCase.presentCodecasts(user);
         PresentableCodecast presentableCodecast = presentableCodecasts.get(0);
         assertThat(presentableCodecast.title).isEqualTo("some title");
-        assertThat(presentableCodecast.publicationDate).isEqualTo(publicationDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+        assertThat(presentableCodecast.publicationDate).isEqualTo(publicationDate.format(Utils.DATE_FORMAT));
         assertThat(presentableCodecasts).hasSize(1);
     }
 

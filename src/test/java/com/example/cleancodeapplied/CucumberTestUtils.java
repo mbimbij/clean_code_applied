@@ -19,10 +19,9 @@ public class CucumberTestUtils {
         return new Codecast(entry.get("title"),
                 LocalDate.parse(
                         entry.get("publicationDate"),
-                        DateTimeFormatter.ofPattern("MM/dd/yyyy")).atStartOfDay(ZoneId.systemDefault()),
+                        Utils.DATE_FORMAT).atStartOfDay(ZoneId.systemDefault()),
                 entry.get("permalink"));
     }
-
 
     @Given("codecasts")
     public void codecasts(List<Codecast> codecasts) {
