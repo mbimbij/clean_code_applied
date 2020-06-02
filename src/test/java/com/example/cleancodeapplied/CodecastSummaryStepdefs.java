@@ -1,5 +1,7 @@
 package com.example.cleancodeapplied;
 
+import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesUseCase;
+import com.example.cleancodeapplied.usecases.codecastSummaries.PresentableCodecastSummary;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
@@ -23,7 +25,7 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class CodecastSummaryStepdefs {
     private ObjectMapper objectMapper = new ObjectMapper();
-    private CodecastSummaryUseCase useCase = new CodecastSummaryUseCase();
+    private CodecastSummariesUseCase useCase = new CodecastSummariesUseCase();
 
     @Before
     public void setUp() {

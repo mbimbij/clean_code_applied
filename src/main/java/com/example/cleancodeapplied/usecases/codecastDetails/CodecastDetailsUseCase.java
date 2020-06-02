@@ -1,4 +1,9 @@
-package com.example.cleancodeapplied;
+package com.example.cleancodeapplied.usecases.codecastDetails;
+
+import com.example.cleancodeapplied.Codecast;
+import com.example.cleancodeapplied.Context;
+import com.example.cleancodeapplied.User;
+import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesUseCase;
 
 public class CodecastDetailsUseCase {
     public PresentableCodecastDetails getCodecastDetails(User loggedInUser, String permalink) {
@@ -8,7 +13,7 @@ public class CodecastDetailsUseCase {
             codecastDetails.wasFound = false;
         }else {
             codecastDetails.wasFound = true;
-            CodecastSummaryUseCase.formatSummaryFields(loggedInUser, codecast, codecastDetails);
+            CodecastSummariesUseCase.formatSummaryFields(loggedInUser, codecast, codecastDetails);
         }
         return codecastDetails;
     }

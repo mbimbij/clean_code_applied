@@ -1,6 +1,6 @@
 package com.example.cleancodeapplied.doubles;
 
-import com.example.cleancodeapplied.Entity;
+import com.example.cleancodeapplied.entities.Entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

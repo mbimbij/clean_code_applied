@@ -1,4 +1,4 @@
-package com.example.cleancodeapplied;
+package com.example.cleancodeapplied.entities;
 
 import java.util.Objects;
 

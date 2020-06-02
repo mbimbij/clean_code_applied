@@ -1,5 +1,7 @@
 package com.example.cleancodeapplied;
 
+import com.example.cleancodeapplied.entities.Entity;
+
 public class License extends Entity {
   public enum Type {DOWNLOAD, VIEW;}
   private Type type;

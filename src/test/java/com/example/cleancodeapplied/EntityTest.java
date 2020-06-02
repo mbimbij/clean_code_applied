@@ -1,5 +1,6 @@
 package com.example.cleancodeapplied;
 
+import com.example.cleancodeapplied.entities.Entity;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

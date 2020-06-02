@@ -3,6 +3,8 @@ package com.example.cleancodeapplied.utilities;
 import com.example.cleancodeapplied.*;
 import com.example.cleancodeapplied.socketserver.SocketServer;
 import com.example.cleancodeapplied.socketserver.SocketService;
+import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesUseCase;
+import com.example.cleancodeapplied.usecases.codecastSummaries.PresentableCodecastSummary;
 import com.example.cleancodeapplied.view.ViewTemplate;
 
 import java.io.IOException;
@@ -42,7 +44,7 @@ public class Main {
 
     private String getFrontPage() throws Exception {
 
-        CodecastSummaryUseCase useCase = new CodecastSummaryUseCase();
+        CodecastSummariesUseCase useCase = new CodecastSummariesUseCase();
         User micah = Context.userGateway.findUserByName("Micah");
         List<PresentableCodecastSummary> presentableCodecasts = useCase.presentCodecasts(micah);
 

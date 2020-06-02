@@ -1,5 +1,7 @@
 package com.example.cleancodeapplied;
 
+import com.example.cleancodeapplied.usecases.codecastDetails.CodecastDetailsUseCase;
+import com.example.cleancodeapplied.usecases.codecastDetails.PresentableCodecastDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

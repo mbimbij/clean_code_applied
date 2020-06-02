@@ -1,5 +1,7 @@
 package com.example.cleancodeapplied;
 
+import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesUseCase;
+import com.example.cleancodeapplied.usecases.codecastSummaries.PresentableCodecastSummary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,18 +12,18 @@ import static com.example.cleancodeapplied.License.Type.DOWNLOAD;
 import static com.example.cleancodeapplied.License.Type.VIEW;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CodecastSummaryUseCaseTest {
+class CodecastSummariesUseCaseTest {
 
     private User user;
     private Codecast codecast;
-    private CodecastSummaryUseCase useCase;
+    private CodecastSummariesUseCase useCase;
 
     @BeforeEach
     void setUp() {
         TestSetup.setupContext();
         user = Context.userGateway.save(new User("user"));
         codecast = Context.codecastGateway.save(new Codecast("codecast",ZonedDateTime.now(), null));
-        useCase = new CodecastSummaryUseCase();
+        useCase = new CodecastSummariesUseCase();
     }
 
     @Test

@@ -1,4 +1,6 @@
-package com.example.cleancodeapplied;
+package com.example.cleancodeapplied.usecases.codecastSummaries;
+
+import com.example.cleancodeapplied.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,7 +8,7 @@ import java.util.stream.Collectors;
 import static com.example.cleancodeapplied.License.Type.DOWNLOAD;
 import static com.example.cleancodeapplied.License.Type.VIEW;
 
-public class CodecastSummaryUseCase {
+public class CodecastSummariesUseCase {
 
     public List<PresentableCodecastSummary> presentCodecasts(User loggedInUser) {
         return Context.codecastGateway.findAllCodeCastsSortedByDateAsc().stream()

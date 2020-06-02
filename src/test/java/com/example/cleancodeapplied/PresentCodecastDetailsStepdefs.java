@@ -1,5 +1,7 @@
 package com.example.cleancodeapplied;
 
+import com.example.cleancodeapplied.usecases.codecastDetails.CodecastDetailsUseCase;
+import com.example.cleancodeapplied.usecases.codecastDetails.PresentableCodecastDetails;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;

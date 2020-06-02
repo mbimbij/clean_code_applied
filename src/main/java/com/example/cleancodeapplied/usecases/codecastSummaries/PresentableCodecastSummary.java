@@ -1,4 +1,4 @@
-package com.example.cleancodeapplied;
+package com.example.cleancodeapplied.usecases.codecastSummaries;
 
 public class PresentableCodecastSummary {
   public String title;
