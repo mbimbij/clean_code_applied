@@ -1,5 +1,11 @@
-package com.example.cleancodeapplied;
+package com.example.cleancodeapplied.usecases.codecastSummaries;
 
+import com.example.cleancodeapplied.Context;
+import com.example.cleancodeapplied.TestSetup;
+import com.example.cleancodeapplied.Utils;
+import com.example.cleancodeapplied.entities.Codecast;
+import com.example.cleancodeapplied.entities.License;
+import com.example.cleancodeapplied.entities.User;
 import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesUseCase;
 import com.example.cleancodeapplied.usecases.codecastSummaries.PresentableCodecastSummary;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,8 +14,8 @@ import org.junit.jupiter.api.Test;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import static com.example.cleancodeapplied.License.Type.DOWNLOAD;
-import static com.example.cleancodeapplied.License.Type.VIEW;
+import static com.example.cleancodeapplied.entities.License.Type.DOWNLOAD;
+import static com.example.cleancodeapplied.entities.License.Type.VIEW;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CodecastSummariesUseCaseTest {

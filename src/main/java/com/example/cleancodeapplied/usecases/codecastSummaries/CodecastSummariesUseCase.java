@@ -1,12 +1,15 @@
 package com.example.cleancodeapplied.usecases.codecastSummaries;
 
 import com.example.cleancodeapplied.*;
+import com.example.cleancodeapplied.entities.Codecast;
+import com.example.cleancodeapplied.entities.License;
+import com.example.cleancodeapplied.entities.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.cleancodeapplied.License.Type.DOWNLOAD;
-import static com.example.cleancodeapplied.License.Type.VIEW;
+import static com.example.cleancodeapplied.entities.License.Type.DOWNLOAD;
+import static com.example.cleancodeapplied.entities.License.Type.VIEW;
 
 public class CodecastSummariesUseCase {
 

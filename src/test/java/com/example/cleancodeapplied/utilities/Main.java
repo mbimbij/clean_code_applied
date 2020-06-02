@@ -1,6 +1,7 @@
 package com.example.cleancodeapplied.utilities;
 
 import com.example.cleancodeapplied.*;
+import com.example.cleancodeapplied.entities.User;
 import com.example.cleancodeapplied.socketserver.SocketServer;
 import com.example.cleancodeapplied.socketserver.SocketService;
 import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesUseCase;

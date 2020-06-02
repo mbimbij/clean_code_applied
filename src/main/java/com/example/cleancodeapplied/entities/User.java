@@ -1,4 +1,4 @@
-package com.example.cleancodeapplied;
+package com.example.cleancodeapplied.entities;
 
 import com.example.cleancodeapplied.entities.Entity;
 

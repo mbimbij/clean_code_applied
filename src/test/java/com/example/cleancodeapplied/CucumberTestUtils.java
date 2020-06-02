@@ -1,5 +1,6 @@
 package com.example.cleancodeapplied;
 
+import com.example.cleancodeapplied.entities.Codecast;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.Given;

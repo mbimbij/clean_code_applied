@@ -1,7 +1,7 @@
 package com.example.cleancodeapplied.doubles;
 
-import com.example.cleancodeapplied.Codecast;
-import com.example.cleancodeapplied.CodecastGateway;
+import com.example.cleancodeapplied.entities.Codecast;
+import com.example.cleancodeapplied.gateways.CodecastGateway;
 
 import java.util.ArrayList;
 import java.util.Comparator;

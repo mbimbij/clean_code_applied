@@ -1,4 +1,6 @@
-package com.example.cleancodeapplied;
+package com.example.cleancodeapplied.gateways;
+
+import com.example.cleancodeapplied.entities.Codecast;
 
 import java.util.List;
 

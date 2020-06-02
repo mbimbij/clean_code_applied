@@ -1,8 +1,8 @@
 package com.example.cleancodeapplied.usecases.codecastDetails;
 
-import com.example.cleancodeapplied.Codecast;
+import com.example.cleancodeapplied.entities.Codecast;
 import com.example.cleancodeapplied.Context;
-import com.example.cleancodeapplied.User;
+import com.example.cleancodeapplied.entities.User;
 import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesUseCase;
 
 public class CodecastDetailsUseCase {

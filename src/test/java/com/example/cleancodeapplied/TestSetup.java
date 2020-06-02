@@ -3,10 +3,13 @@ package com.example.cleancodeapplied;
 import com.example.cleancodeapplied.doubles.InMemoryCodecastGateway;
 import com.example.cleancodeapplied.doubles.InMemoryLicenseGateway;
 import com.example.cleancodeapplied.doubles.InMemoryUserGateway;
+import com.example.cleancodeapplied.entities.Codecast;
+import com.example.cleancodeapplied.entities.License;
+import com.example.cleancodeapplied.entities.User;
 
 import java.time.ZonedDateTime;
 
-import static com.example.cleancodeapplied.License.Type.VIEW;
+import static com.example.cleancodeapplied.entities.License.Type.VIEW;
 
 public class TestSetup {
 

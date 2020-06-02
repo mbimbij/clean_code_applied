@@ -1,5 +1,7 @@
-package com.example.cleancodeapplied;
+package com.example.cleancodeapplied.usecases.codecastDetails;
 
+import com.example.cleancodeapplied.Context;
+import com.example.cleancodeapplied.entities.License;
 import com.example.cleancodeapplied.usecases.codecastDetails.CodecastDetailsUseCase;
 import com.example.cleancodeapplied.usecases.codecastDetails.PresentableCodecastDetails;
 import io.cucumber.java.DataTableType;
@@ -12,7 +14,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PresentCodecastDetailsStepdefs {
+public class CodecastDetailsStepdefs {
 
     private CodecastDetailsUseCase useCase = new CodecastDetailsUseCase();
     private PresentableCodecastDetails actualCodecastDetails;
