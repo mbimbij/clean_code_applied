@@ -61,7 +61,7 @@ public class Main {
             codecastTemplate.replace("title", presentableCodecast.title);
             codecastTemplate.replace("publicationDate", presentableCodecast.publicationDate);
             codecastTemplate.replace("thumbnail", "https://cleancoders.com/images/portraits/robert-martin.jpg");
-            codecastTemplate.replace("permalink", presentableCodecast.publicationDate);
+            codecastTemplate.replace("permalink", presentableCodecast.permalink);
             codecastTemplate.replace("author", "Uncle Bob");
             codecastTemplate.replace("duration", "1:00:00");
             codecastTemplate.replace("licenseOptions", "buying options go here");
