@@ -14,6 +14,14 @@ public class RequestParserTest {
     }
 
     @Test
+    void nullRequest() {
+        RequestParser requestParser = new RequestParser();
+        ParsedRequest parsedRequest = requestParser.parse(null);
+        assertThat(parsedRequest.method).isEqualTo("");
+        assertThat(parsedRequest.path).isEqualTo("");
+    }
+
+    @Test
     void requestNonEmptyRequest() {
         RequestParser requestParser = new RequestParser();
         ParsedRequest parsedRequest = requestParser.parse("GET /foo/bar HTTP1.1");
