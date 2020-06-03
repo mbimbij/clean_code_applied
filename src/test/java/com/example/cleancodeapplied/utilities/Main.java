@@ -3,6 +3,8 @@ package com.example.cleancodeapplied.utilities;
 import com.example.cleancodeapplied.Context;
 import com.example.cleancodeapplied.TestSetup;
 import com.example.cleancodeapplied.entities.User;
+import com.example.cleancodeapplied.http.ParsedRequest;
+import com.example.cleancodeapplied.http.RequestParser;
 import com.example.cleancodeapplied.socketserver.SocketServer;
 import com.example.cleancodeapplied.socketserver.SocketService;
 import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesUseCase;
@@ -18,6 +20,7 @@ import java.util.List;
 
 public class Main {
     private SocketServer server;
+    private RequestParser requestParser = new RequestParser();
 
     public static void main(String[] args) throws IOException {
         TestSetup.setupSampleData();
@@ -27,7 +30,8 @@ public class Main {
     public Main() throws IOException {
         SocketService mainService = socket -> {
             try {
-                System.out.println(new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine());
+                String browserRequest = new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine();
+                ParsedRequest parsedRequest = requestParser.parse(browserRequest);
                 String frontPage = getFrontPage();
                 String response = makeResponse(frontPage);
                 socket.getOutputStream().write(response.getBytes(StandardCharsets.UTF_8));

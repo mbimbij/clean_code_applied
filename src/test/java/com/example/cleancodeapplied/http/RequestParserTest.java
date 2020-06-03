@@ -22,10 +22,18 @@ public class RequestParserTest {
     }
 
     @Test
-    void requestNonEmptyRequest() {
+    void nonEmptyRequest() {
         RequestParser requestParser = new RequestParser();
         ParsedRequest parsedRequest = requestParser.parse("GET /foo/bar HTTP1.1");
         assertThat(parsedRequest.method).isEqualTo("GET");
         assertThat(parsedRequest.path).isEqualTo("/foo/bar");
+    }
+
+    @Test
+    void partialRequest() {
+        RequestParser requestParser = new RequestParser();
+        ParsedRequest parsedRequest = requestParser.parse("GET");
+        assertThat(parsedRequest.method).isEqualTo("GET");
+        assertThat(parsedRequest.path).isEqualTo("");
     }
 }
