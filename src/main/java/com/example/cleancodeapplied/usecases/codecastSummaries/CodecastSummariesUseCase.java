@@ -26,10 +26,11 @@ public class CodecastSummariesUseCase {
     }
 
     public static void formatSummaryFields(User loggedInUser, Codecast codecast, PresentableCodecastSummary presentableCodecast) {
-        presentableCodecast.title=codecast.getTitle();
-        presentableCodecast.publicationDate=codecast.getPublicationDate().format(Utils.DATE_FORMAT);
-        presentableCodecast.isViewable= isLicensedFor(VIEW, loggedInUser, codecast);
-        presentableCodecast.isDownloadable= isLicensedFor(DOWNLOAD, loggedInUser, codecast);
+        presentableCodecast.title = codecast.getTitle();
+        presentableCodecast.publicationDate = codecast.getPublicationDate().format(Utils.DATE_FORMAT);
+        presentableCodecast.isViewable = isLicensedFor(VIEW, loggedInUser, codecast);
+        presentableCodecast.isDownloadable = isLicensedFor(DOWNLOAD, loggedInUser, codecast);
+        presentableCodecast.permalink = codecast.getPermalink();
     }
 
     public static boolean isLicensedFor(License.Type licenceType, User user, Codecast codecast) {

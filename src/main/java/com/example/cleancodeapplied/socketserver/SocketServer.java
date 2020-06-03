@@ -30,6 +30,7 @@ public class SocketServer {
     }
 
     public void start() {
+        System.out.println("starting server");
         Runnable connectionHandler = () -> {
             try {
                 while (running){

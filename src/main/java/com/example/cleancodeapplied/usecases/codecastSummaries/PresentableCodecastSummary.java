@@ -5,4 +5,5 @@ public class PresentableCodecastSummary {
   public String publicationDate;
   public boolean isViewable;
   public boolean isDownloadable;
+  public String permalink;
 }

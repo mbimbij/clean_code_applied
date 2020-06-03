@@ -1,5 +1,7 @@
-package com.example.cleancodeapplied;
+package com.example.cleancodeapplied.usecases;
 
+import com.example.cleancodeapplied.Context;
+import com.example.cleancodeapplied.Utils;
 import com.example.cleancodeapplied.entities.Codecast;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.DataTableType;

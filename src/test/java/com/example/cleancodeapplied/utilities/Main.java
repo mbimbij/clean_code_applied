@@ -1,6 +1,7 @@
 package com.example.cleancodeapplied.utilities;
 
-import com.example.cleancodeapplied.*;
+import com.example.cleancodeapplied.Context;
+import com.example.cleancodeapplied.TestSetup;
 import com.example.cleancodeapplied.entities.User;
 import com.example.cleancodeapplied.socketserver.SocketServer;
 import com.example.cleancodeapplied.socketserver.SocketService;
@@ -8,7 +9,9 @@ import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummaries
 import com.example.cleancodeapplied.usecases.codecastSummaries.PresentableCodecastSummary;
 import com.example.cleancodeapplied.view.ViewTemplate;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -24,6 +27,7 @@ public class Main {
     public Main() throws IOException {
         SocketService mainService = socket -> {
             try {
+                System.out.println(new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine());
                 String frontPage = getFrontPage();
                 String response = makeResponse(frontPage);
                 socket.getOutputStream().write(response.getBytes(StandardCharsets.UTF_8));
@@ -57,6 +61,7 @@ public class Main {
             codecastTemplate.replace("title", presentableCodecast.title);
             codecastTemplate.replace("publicationDate", presentableCodecast.publicationDate);
             codecastTemplate.replace("thumbnail", "https://cleancoders.com/images/portraits/robert-martin.jpg");
+            codecastTemplate.replace("permalink", presentableCodecast.publicationDate);
             codecastTemplate.replace("author", "Uncle Bob");
             codecastTemplate.replace("duration", "1:00:00");
             codecastTemplate.replace("licenseOptions", "buying options go here");

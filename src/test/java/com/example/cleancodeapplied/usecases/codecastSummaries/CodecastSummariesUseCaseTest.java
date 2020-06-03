@@ -6,8 +6,6 @@ import com.example.cleancodeapplied.Utils;
 import com.example.cleancodeapplied.entities.Codecast;
 import com.example.cleancodeapplied.entities.License;
 import com.example.cleancodeapplied.entities.User;
-import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesUseCase;
-import com.example.cleancodeapplied.usecases.codecastSummaries.PresentableCodecastSummary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,12 +21,15 @@ class CodecastSummariesUseCaseTest {
     private User user;
     private Codecast codecast;
     private CodecastSummariesUseCase useCase;
+    private String title = "codecast";
+    private String permalink = "permalink";
+    private ZonedDateTime publicationDate = ZonedDateTime.now();
 
     @BeforeEach
     void setUp() {
         TestSetup.setupContext();
         user = Context.userGateway.save(new User("user"));
-        codecast = Context.codecastGateway.save(new Codecast("codecast",ZonedDateTime.now(), null));
+        codecast = Context.codecastGateway.save(new Codecast(title, publicationDate, permalink));
         useCase = new CodecastSummariesUseCase();
     }
 
@@ -71,6 +72,7 @@ class CodecastSummariesUseCaseTest {
         PresentableCodecastSummary presentableCodecast = presentableCodecasts.get(0);
         assertThat(presentableCodecast.title).isEqualTo("some title");
         assertThat(presentableCodecast.publicationDate).isEqualTo(publicationDate.format(Utils.DATE_FORMAT));
+        assertThat(presentableCodecast.permalink).isEqualTo(permalink);
         assertThat(presentableCodecasts).hasSize(1);
     }
 
