@@ -25,6 +25,16 @@ class RouterTest {
     }
 
     @Test
+    void rootPath() {
+        router.addPath("", new TestController());
+        ParsedRequest request = new ParsedRequest("GET", "/");
+
+        router.route(request);
+
+        assertThat(actualRequest).isEqualToComparingFieldByField(request);
+    }
+
+    @Test
     void pathWithDynamicData() {
         router.addPath("a", new TestController());
 
