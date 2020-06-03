@@ -11,7 +11,9 @@ public class Router {
     }
 
     public void route(ParsedRequest request) {
-        Controller controller = routes.get(request.path);
+        String[] parts = request.path.split("/");
+        String controllerKey = parts[1];
+        Controller controller = routes.get(controllerKey);
         controller.handle(request);
     }
 }

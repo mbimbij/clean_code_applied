@@ -1,20 +1,37 @@
 package com.example.cleancodeapplied.http;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RouterTest {
     private ParsedRequest actualRequest;
+    private Router router;
+
+    @BeforeEach
+    void setUp() {
+        router = new Router();
+    }
 
     @Test
     void simplePath() {
-        Router router = new Router();
         router.addPath("it", new TestController());
+        ParsedRequest request = new ParsedRequest("GET", "/it");
 
-        router.route(new ParsedRequest("GET", "it"));
+        router.route(request);
 
-        assertThat(actualRequest).isEqualTo(new ParsedRequest("GET", "it"));
+        assertThat(actualRequest).isEqualToComparingFieldByField(request);
+    }
+
+    @Test
+    void pathWithDynamicData() {
+        router.addPath("a", new TestController());
+
+        ParsedRequest request = new ParsedRequest("GET", "/a/b/c");
+        router.route(request);
+
+        assertThat(actualRequest).isEqualToComparingFieldByField(request);
     }
 
     class TestController implements Controller{
