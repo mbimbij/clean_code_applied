@@ -46,8 +46,9 @@ class RouterTest {
 
     class TestController implements Controller{
         @Override
-        public void handle(ParsedRequest request) {
+        public String handle(ParsedRequest request) {
             actualRequest = request;
+            return null;
         }
     }
 }

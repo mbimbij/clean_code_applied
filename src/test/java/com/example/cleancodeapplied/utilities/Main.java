@@ -3,13 +3,16 @@ package com.example.cleancodeapplied.utilities;
 import com.example.cleancodeapplied.Context;
 import com.example.cleancodeapplied.TestSetup;
 import com.example.cleancodeapplied.entities.User;
+import com.example.cleancodeapplied.http.Controller;
 import com.example.cleancodeapplied.http.ParsedRequest;
 import com.example.cleancodeapplied.http.RequestParser;
+import com.example.cleancodeapplied.http.Router;
 import com.example.cleancodeapplied.socketserver.SocketServer;
 import com.example.cleancodeapplied.socketserver.SocketService;
 import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesUseCase;
 import com.example.cleancodeapplied.usecases.codecastSummaries.PresentableCodecastSummary;
 import com.example.cleancodeapplied.view.ViewTemplate;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,8 +24,12 @@ import java.util.List;
 public class Main {
     private SocketServer server;
     private RequestParser requestParser = new RequestParser();
+    private static Router router = new Router();
 
     public static void main(String[] args) throws IOException {
+        router.addPath("", new CodecastSummariesController());
+//        router.addPath("episode", new CodecastDetailsController());
+
         TestSetup.setupSampleData();
         Main main = new Main();
     }
@@ -31,10 +38,15 @@ public class Main {
         SocketService mainService = socket -> {
             try {
                 String browserRequest = new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine();
+                System.out.println("received : "+browserRequest);
                 ParsedRequest parsedRequest = requestParser.parse(browserRequest);
-                String frontPage = getFrontPage();
-                String response = makeResponse(frontPage);
-                socket.getOutputStream().write(response.getBytes(StandardCharsets.UTF_8));
+                String response = router.route(parsedRequest);
+                if(StringUtils.isNotBlank(response)){
+                    socket.getOutputStream().write(response.getBytes(StandardCharsets.UTF_8));
+                }else{
+                    socket.getOutputStream().write(
+                            ("HTTP/1.0 404 Not Found\n\n").getBytes(StandardCharsets.UTF_8));
+                }
                 socket.close();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -44,14 +56,27 @@ public class Main {
         server.start();
     }
 
-    private String makeResponse(String content) {
+    static class CodecastSummariesController implements Controller{
+        @Override
+        public String handle(ParsedRequest request) {
+            try {
+                String frontPage = getFrontPage();
+                return makeResponse(frontPage);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
+    private static String makeResponse(String content) {
         return "HTTP/1.1 200 OK\n" +
                 "Content-Type: text/html; charset=UTF-8\n" +
                 String.format("Content-Length: %d\n\n", content.length()) +
                 content;
     }
 
-    private String getFrontPage() throws Exception {
+    private static String getFrontPage() throws Exception {
 
         CodecastSummariesUseCase useCase = new CodecastSummariesUseCase();
         User micah = Context.userGateway.findUserByName("Micah");
