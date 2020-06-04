@@ -12,7 +12,7 @@ public class CodecastSummariesController implements Controller {
             CodecastSummariesUseCase useCase = new CodecastSummariesUseCase();
             User micah = Context.userGateway.findUserByName("Micah");
             CodecastSummariesView codecastSummariesView = new CodecastSummariesView();
-            String frontpageHtmlContent = codecastSummariesView.getFrontPage(useCase.presentCodecasts(micah));
+            String frontpageHtmlContent = codecastSummariesView.toHtml(useCase.presentCodecasts(micah));
             return Controller.makeResponse(frontpageHtmlContent);
         } catch (Exception e) {
             e.printStackTrace();

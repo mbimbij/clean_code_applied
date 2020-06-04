@@ -5,7 +5,7 @@ import com.example.cleancodeapplied.view.ViewTemplate;
 import java.util.List;
 
 public class CodecastSummariesView {
-    String getFrontPage(List<PresentableCodecastSummary> presentableCodecasts) throws Exception {
+    String toHtml(List<PresentableCodecastSummary> presentableCodecasts) throws Exception {
         ViewTemplate frontpageTemplate = ViewTemplate.fromClasspathResource("html/frontpage.html");
         StringBuilder codecastLines = new StringBuilder();
         for (PresentableCodecastSummary presentableCodecast : presentableCodecasts) {
