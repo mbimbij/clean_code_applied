@@ -47,7 +47,7 @@ class RouterTest {
     @Test
     void for404() throws Exception {
         String result = router.route(new ParsedRequest("GET", "/something-missing"));
-        assertThat(result).isEqualTo("HTTP/1.1 404 Not Found\n\n");
+        assertThat(result).isEqualTo("HTTP/1.1 404 Not Found\n\n404 Not Found");
     }
 
     class TestController implements Controller{
