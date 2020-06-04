@@ -44,6 +44,12 @@ class RouterTest {
         assertThat(actualRequest).isEqualToComparingFieldByField(request);
     }
 
+    @Test
+    void for404() throws Exception {
+        String result = router.route(new ParsedRequest("GET", "/something-missing"));
+        assertThat(result).isEqualTo("HTTP/1.1 404 Not Found\n\n");
+    }
+
     class TestController implements Controller{
         @Override
         public String handle(ParsedRequest request) {
