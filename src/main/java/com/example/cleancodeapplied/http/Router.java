@@ -16,6 +16,6 @@ public class Router {
         String controllerKey = parts.length > 1 ? parts[1] : "";
         return Optional.ofNullable(routes.get(controllerKey))
                 .map(controller -> controller.handle(request))
-                .orElse("HTTP/1.1 404 Not Found\n\n");
+                .orElse("HTTP/1.1 404 Not Found\n\n404 Not Found");
     }
 }
