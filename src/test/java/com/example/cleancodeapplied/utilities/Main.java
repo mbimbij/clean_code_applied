@@ -45,7 +45,7 @@ public class Main {
                     socket.getOutputStream().write(response.getBytes(StandardCharsets.UTF_8));
                 }else{
                     socket.getOutputStream().write(
-                            ("HTTP/1.0 404 Not Found\n\n").getBytes(StandardCharsets.UTF_8));
+                            ("HTTP/1.1 404 Not Found\n\n").getBytes(StandardCharsets.UTF_8));
                 }
                 socket.close();
             } catch (Exception e) {
