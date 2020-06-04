@@ -2,7 +2,6 @@ package com.example.cleancodeapplied.socketserver;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -40,15 +39,32 @@ public class SocketServerTest {
         OutputStream outputStream = socket.getOutputStream();
         outputStream.write("echo\n".getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        String response = bufferedReader.lines().collect(Collectors.joining("\n"));
+        String response = new BufferedReader(new InputStreamReader(socket.getInputStream())).lines().collect(Collectors.joining("\n"));
 
         assertThat(response).isEqualTo("echo");
     }
 
+    @Test
+    void multipleEchos() throws IOException {
+        server.start();
+        Thread.yield();
+
+        Socket socket1 = new Socket("localhost", port);
+        Socket socket2 = new Socket("localhost", port);
+
+        socket1.getOutputStream().write("echo1\n".getBytes(StandardCharsets.UTF_8));
+        socket2.getOutputStream().write("echo2\n".getBytes(StandardCharsets.UTF_8));
+
+        String response1 = new BufferedReader(new InputStreamReader(socket1.getInputStream())).readLine();
+        String response2 = new BufferedReader(new InputStreamReader(socket2.getInputStream())).readLine();
+
+        assertThat(response1).isEqualTo("echo1");
+        assertThat(response2).isEqualTo("echo2");
+    }
+
     public static class EchoSocketService extends TestSocketService {
         @Override
-        protected void doService() throws IOException {
+        protected void doService(Socket socket) throws IOException {
             InputStream inputStream = socket.getInputStream();
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);

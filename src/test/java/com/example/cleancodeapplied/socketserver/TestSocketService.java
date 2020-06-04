@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.net.Socket;
 
 public abstract class TestSocketService implements SocketService {
-    protected Socket socket;
-    protected int connections;
 
     @Override
     public void serve(Socket socket) {
-        this.socket=socket;
         try {
-            doService();
+            doService(socket);
             synchronized (this) {
                 notify();
             }
@@ -21,5 +18,5 @@ public abstract class TestSocketService implements SocketService {
         }
     }
 
-    protected abstract void doService() throws IOException;
+    protected abstract void doService(Socket socket) throws IOException;
 }
