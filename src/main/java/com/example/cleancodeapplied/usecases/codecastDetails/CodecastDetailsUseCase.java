@@ -3,7 +3,7 @@ package com.example.cleancodeapplied.usecases.codecastDetails;
 import com.example.cleancodeapplied.entities.Codecast;
 import com.example.cleancodeapplied.Context;
 import com.example.cleancodeapplied.entities.User;
-import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesUseCase;
+import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesPresenter;
 
 public class CodecastDetailsUseCase {
     public PresentableCodecastDetails getCodecastDetails(User loggedInUser, String permalink) {
@@ -13,7 +13,7 @@ public class CodecastDetailsUseCase {
             codecastDetails.wasFound = false;
         }else {
             codecastDetails.wasFound = true;
-            CodecastSummariesUseCase.formatSummaryFields(loggedInUser, codecast, codecastDetails);
+            CodecastSummariesPresenter.formatSummaryFields(loggedInUser, codecast, codecastDetails);
         }
         return codecastDetails;
     }
