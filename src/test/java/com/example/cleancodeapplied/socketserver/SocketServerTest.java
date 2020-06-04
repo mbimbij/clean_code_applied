@@ -34,7 +34,7 @@ public class SocketServerTest {
     @Test
     void canEcho() throws IOException, InterruptedException {
         server.start();
-        Thread.yield();
+        Thread.sleep(10);
         Socket socket = new Socket("localhost", port);
         OutputStream outputStream = socket.getOutputStream();
         outputStream.write("echo\n".getBytes(StandardCharsets.UTF_8));
@@ -45,9 +45,9 @@ public class SocketServerTest {
     }
 
     @Test
-    void multipleEchos() throws IOException {
+    void multipleEchos() throws IOException, InterruptedException {
         server.start();
-        Thread.yield();
+        Thread.sleep(10);
 
         Socket socket1 = new Socket("localhost", port);
         Socket socket2 = new Socket("localhost", port);

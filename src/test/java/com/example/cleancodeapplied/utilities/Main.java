@@ -20,7 +20,7 @@ public class Main {
     private static Router router = new Router();
 
     public static void main(String[] args) throws IOException {
-        router.addPath("", new CodecastSummariesController());
+        router.addPath("", new CodecastSummariesController(null));
 //        router.addPath("episode", new CodecastDetailsController());
 
         TestSetup.setupSampleData();

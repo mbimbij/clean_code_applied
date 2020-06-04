@@ -5,8 +5,6 @@ import com.example.cleancodeapplied.TestSetup;
 import com.example.cleancodeapplied.entities.Codecast;
 import com.example.cleancodeapplied.entities.License;
 import com.example.cleancodeapplied.entities.User;
-import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesUseCase;
-import com.example.cleancodeapplied.usecases.codecastSummaries.PresentableCodecastSummary;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
@@ -64,7 +62,7 @@ public class CodecastSummaryStepdefs {
 
     @And("there will be no codecasts presented")
     public void thereWillBeNoCodecastsPresented() {
-        assertThat(useCase.presentCodecasts(Context.gateKeeper.getLoggedInUser())).isEmpty();
+        assertThat(useCase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser())).isEmpty();
     }
 
     @And("with licence for {string} able to view {string}")
@@ -80,12 +78,12 @@ public class CodecastSummaryStepdefs {
     public void thenTheFollowingCodecastsWillBePresentedFor(String expectedUserName
             , DataTable expectedPresentedCodecastsInOrder
     ) {
-        List<PresentableCodecastSummary> actuallyPresentedCodecasts = useCase.presentCodecasts(Context.gateKeeper.getLoggedInUser());
+        List<CodecaseSummaryViewModel> actuallyPresentedCodecasts = useCase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser());
         DataTable actuallyPresentedCodecastsDatatable = convertToCucumberDatatable(actuallyPresentedCodecasts);
         expectedPresentedCodecastsInOrder.diff(actuallyPresentedCodecastsDatatable);
     }
 
-    private DataTable convertToCucumberDatatable(List<PresentableCodecastSummary> actuallyPresentedCodecasts) {
+    private DataTable convertToCucumberDatatable(List<CodecaseSummaryViewModel> actuallyPresentedCodecasts) {
         List<List<String>> actuallyPresentedCodecastsAsList = new ArrayList<>();
         actuallyPresentedCodecastsAsList.add(Arrays.asList("title", "publicationDate", "viewable", "downloadable"));
 

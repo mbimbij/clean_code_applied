@@ -1,7 +1,5 @@
 package com.example.cleancodeapplied.entities;
 
-import com.example.cleancodeapplied.entities.Entity;
-
 public class User extends Entity {
   private String userName;
 

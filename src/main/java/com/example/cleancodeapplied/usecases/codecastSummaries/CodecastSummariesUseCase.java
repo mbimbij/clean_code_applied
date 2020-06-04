@@ -8,21 +8,12 @@ import com.example.cleancodeapplied.entities.User;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.cleancodeapplied.entities.License.Type.DOWNLOAD;
-import static com.example.cleancodeapplied.entities.License.Type.VIEW;
-
 public class CodecastSummariesUseCase {
 
-    public List<PresentableCodecastSummary> presentCodecasts(User loggedInUser) {
+    public List<CodecaseSummaryViewModel> summarizeCodecasts(User loggedInUser) {
         return Context.codecastGateway.findAllCodeCastsSortedByDateAsc().stream()
-                .map(codecast -> formatCodecast(loggedInUser, codecast))
+                .map(codecast -> CodecastSummariesPresenter.formatCodecast(loggedInUser, codecast))
                 .collect(Collectors.toList());
-    }
-
-    private PresentableCodecastSummary formatCodecast(User loggedInUser, Codecast codecast) {
-        PresentableCodecastSummary presentableCodecast = new PresentableCodecastSummary();
-        CodecastSummariesPresenter.formatSummaryFields(loggedInUser, codecast, presentableCodecast);
-        return presentableCodecast;
     }
 
     public static boolean isLicensedFor(License.Type licenceType, User user, Codecast codecast) {

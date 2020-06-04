@@ -1,6 +1,6 @@
 package com.example.cleancodeapplied.usecases.codecastSummaries;
 
-public class PresentableCodecastSummary {
+public class CodecaseSummaryViewModel {
   public String title;
   public String publicationDate;
   public boolean isViewable;
