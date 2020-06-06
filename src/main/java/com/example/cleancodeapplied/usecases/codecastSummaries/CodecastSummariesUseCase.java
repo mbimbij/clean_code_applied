@@ -12,12 +12,6 @@ import static com.example.cleancodeapplied.entities.License.Type.DOWNLOAD;
 import static com.example.cleancodeapplied.entities.License.Type.VIEW;
 
 public class CodecastSummariesUseCase implements CodecastSummariesInputBoundary {
-//
-//    public List<CodecastSummariesResponseModel> summarizeCodecasts(User loggedInUser) {
-//        return Context.codecastGateway.findAllCodeCastsSortedByDateAsc().stream()
-//                .map(codecast -> CodecastSummariesPresenter.formatCodecast(loggedInUser, codecast))
-//                .collect(Collectors.toList());
-//    }
 
     public static boolean isLicensedFor(License.Type licenceType, User user, Codecast codecast) {
         List<License> licences = Context.licenseGateway.findLicensesForUserAndCodecast(user, codecast);

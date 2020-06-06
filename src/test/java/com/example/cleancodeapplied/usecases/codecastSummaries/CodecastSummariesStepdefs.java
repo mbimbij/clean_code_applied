@@ -80,7 +80,7 @@ public class CodecastSummariesStepdefs {
     }
 
     @Then("then the following codecasts will be presented for {string}")
-    public void thenTheFollowingCodecastsWillBePresentedFor(String expectedUserName
+    public void thenTheFollowingCodecastsWillBePresentedFor(String expectedUserNamde
             , DataTable expectedPresentedCodecastsInOrder
     ) {
         useCase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser(), presenter);

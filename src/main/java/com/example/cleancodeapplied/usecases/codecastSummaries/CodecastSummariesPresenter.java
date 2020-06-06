@@ -20,12 +20,6 @@ public class CodecastSummariesPresenter implements CodecastSummariesOutputBounda
         presentableCodecast.permalink = codecast.getPermalink();
     }
 
-    public static CodecastSummariesResponseModel formatCodecast(User loggedInUser, Codecast codecast) {
-        CodecastSummariesResponseModel presentableCodecast = new CodecastSummariesResponseModel();
-        formatSummaryFields(loggedInUser, codecast, presentableCodecast);
-        return presentableCodecast;
-    }
-
     @Override
     public CodecastSummariesViewModel getViewModel() {
         return viewModel;
