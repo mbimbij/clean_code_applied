@@ -8,13 +8,16 @@ import com.example.cleancodeapplied.entities.User;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CodecastSummariesUseCase implements CodecastSummariesInputBoundary {
+import static com.example.cleancodeapplied.entities.License.Type.DOWNLOAD;
+import static com.example.cleancodeapplied.entities.License.Type.VIEW;
 
-    public List<CodecastSummariesResponseModel> summarizeCodecasts(User loggedInUser) {
-        return Context.codecastGateway.findAllCodeCastsSortedByDateAsc().stream()
-                .map(codecast -> CodecastSummariesPresenter.formatCodecast(loggedInUser, codecast))
-                .collect(Collectors.toList());
-    }
+public class CodecastSummariesUseCase implements CodecastSummariesInputBoundary {
+//
+//    public List<CodecastSummariesResponseModel> summarizeCodecasts(User loggedInUser) {
+//        return Context.codecastGateway.findAllCodeCastsSortedByDateAsc().stream()
+//                .map(codecast -> CodecastSummariesPresenter.formatCodecast(loggedInUser, codecast))
+//                .collect(Collectors.toList());
+//    }
 
     public static boolean isLicensedFor(License.Type licenceType, User user, Codecast codecast) {
         List<License> licences = Context.licenseGateway.findLicensesForUserAndCodecast(user, codecast);
@@ -28,7 +31,23 @@ public class CodecastSummariesUseCase implements CodecastSummariesInputBoundary 
     @Override
     public void summarizeCodecasts(User loggedInUser, CodecastSummariesOutputBoundary presenter) {
         CodecastSummariesResponseModel responseModel = new CodecastSummariesResponseModel();
+        List<Codecast> allCodeCasts = Context.codecastGateway.findAllCodeCastsSortedByDateAsc();
+
+        for (Codecast codecast : allCodeCasts) {
+            responseModel.addCodecastSummary(summarizeCodecast(codecast,loggedInUser));
+        }
+
         presenter.present(responseModel);
+    }
+
+    private CodecastSummary summarizeCodecast(Codecast codecast, User loggedInUser) {
+        CodecastSummary summary = new CodecastSummary();
+        summary.title = codecast.getTitle();
+        summary.publicationDate = codecast.getPublicationDate();
+        summary.permalink = codecast.getPermalink();
+        summary.isViewable = isLicensedFor(VIEW, loggedInUser, codecast);
+        summary.isDownloadable = isLicensedFor(DOWNLOAD, loggedInUser, codecast);
+        return summary;
     }
 }
 

@@ -24,6 +24,7 @@ class CodecastSummariesUseCaseTest {
     private String title = "codecast";
     private String permalink = "permalink";
     private ZonedDateTime publicationDate = ZonedDateTime.now();
+    private CodecastSummariesOutputBoundarySpy presenterSpy;
 
     @BeforeEach
     void setUp() {
@@ -31,6 +32,7 @@ class CodecastSummariesUseCaseTest {
         user = Context.userGateway.save(new User("user"));
         codecast = Context.codecastGateway.save(new Codecast(title, publicationDate, permalink));
         useCase = new CodecastSummariesUseCase();
+        presenterSpy = new CodecastSummariesOutputBoundarySpy();
     }
 
     @Test
@@ -58,8 +60,9 @@ class CodecastSummariesUseCaseTest {
     @Test
     void presentingNoCodecasts() {
         Context.codecastGateway.delete(codecast);
-        List<CodecastSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
-        assertThat(presentableCodecasts).isEmpty();
+        useCase.summarizeCodecasts(user, presenterSpy);
+        List<CodecastSummary> codecastSummaries = presenterSpy.responseModel.getCodecastSummaries();
+        assertThat(codecastSummaries).isEmpty();
     }
 
     @Test
@@ -68,43 +71,43 @@ class CodecastSummariesUseCaseTest {
         ZonedDateTime publicationDate = ZonedDateTime.now().plusDays(1);
         codecast.setPublicationDate(publicationDate);
         Context.codecastGateway.save(codecast);
-        List<CodecastSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
-        CodecastSummariesResponseModel presentableCodecast = presentableCodecasts.get(0);
-        assertThat(presentableCodecast.title).isEqualTo("some title");
-        assertThat(presentableCodecast.publicationDate).isEqualTo(publicationDate.format(Utils.DATE_FORMAT));
-        assertThat(presentableCodecast.permalink).isEqualTo(permalink);
-        assertThat(presentableCodecasts).hasSize(1);
+
+        useCase.summarizeCodecasts(user,presenterSpy);
+        assertThat(presenterSpy.responseModel.getCodecastSummaries()).hasSize(1);
+        CodecastSummary codecastSummary = presenterSpy.responseModel.getCodecastSummaries().get(0);
+        assertThat(codecastSummary.title).isEqualTo("some title");
+        assertThat(codecastSummary.publicationDate).isEqualTo(publicationDate);
+        assertThat(codecastSummary.permalink).isEqualTo(permalink);
     }
 
     @Test
     void presentedCodecastIsNotViewableIfNoLicence() {
-        List<CodecastSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
-        CodecastSummariesResponseModel presentableCodecast = presentableCodecasts.get(0);
-        assertThat(presentableCodecast.isViewable).isFalse();
+        useCase.summarizeCodecasts(user, presenterSpy);
+        CodecastSummary codecastSummary = presenterSpy.responseModel.getCodecastSummaries().get(0);
+        assertThat(codecastSummary.isViewable).isFalse();
     }
 
     @Test
-    void presentedCodecastIsViewableIfLicenceExists() {
+    void presentedCodecastIsViewable_ifLicenceExists() {
         Context.licenseGateway.save(new License(VIEW, user, codecast));
-        List<CodecastSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
-        CodecastSummariesResponseModel presentableCodecast = presentableCodecasts.get(0);
-        assertThat(presentableCodecast.isViewable).isTrue();
+        useCase.summarizeCodecasts(user, presenterSpy);
+        CodecastSummary codecastSummary = presenterSpy.responseModel.getCodecastSummaries().get(0);
+        assertThat(codecastSummary.isViewable).isTrue();
     }
 
     @Test
     void presentedCodecastIsDownloadableIfDownloadLicenceExists() {
         License downloadLicence = new License(DOWNLOAD, user, codecast);
         Context.licenseGateway.save(downloadLicence);
-        List<CodecastSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
-        CodecastSummariesResponseModel presentableCodecast = presentableCodecasts.get(0);
-        assertThat(presentableCodecast.isDownloadable).isTrue();
-        assertThat(presentableCodecast.isViewable).isFalse();
+        useCase.summarizeCodecasts(user, presenterSpy);
+        CodecastSummary codecastSummary = presenterSpy.responseModel.getCodecastSummaries().get(0);
+        assertThat(codecastSummary.isDownloadable).isTrue();
+        assertThat(codecastSummary.isViewable).isFalse();
     }
 
     @Test
     void usecaseWiring() {
-        CodecastSummariesOutputBoundarySpy presenterSpy = new CodecastSummariesOutputBoundarySpy();
-        useCase.summarizeCodecasts(user,presenterSpy);
+        useCase.summarizeCodecasts(user, presenterSpy);
         assertThat(presenterSpy.responseModel).isNotNull();
     }
 }
