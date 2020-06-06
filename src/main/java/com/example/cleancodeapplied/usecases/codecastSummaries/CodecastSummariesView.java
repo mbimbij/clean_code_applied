@@ -1,5 +1,5 @@
 package com.example.cleancodeapplied.usecases.codecastSummaries;
 
 public interface CodecastSummariesView {
-    String generateView(CodecastSummariesViewModel viewModel);
+    String generateView(CodecastSummariesViewModel viewModel) throws Exception;
 }

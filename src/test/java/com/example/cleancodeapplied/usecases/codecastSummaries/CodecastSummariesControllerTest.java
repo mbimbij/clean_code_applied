@@ -26,7 +26,7 @@ class CodecastSummariesControllerTest {
     }
 
     @Test
-    void testInputBoundaryInvocation() {
+    void testInputBoundaryInvocation() throws Exception {
         ParsedRequest request = new ParsedRequest("GET","blah");
         controller.handle(request);
 
@@ -37,7 +37,7 @@ class CodecastSummariesControllerTest {
     }
 
     @Test
-    void controllerSendsTheResponseModelToTheView() {
+    void controllerSendsTheResponseModelToTheView() throws Exception {
         CodecastSummariesViewModel model = new CodecastSummariesViewModel();
 
         ParsedRequest request = new ParsedRequest("GET","blah");

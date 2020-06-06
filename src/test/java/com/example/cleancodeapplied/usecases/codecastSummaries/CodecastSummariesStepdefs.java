@@ -2,7 +2,6 @@ package com.example.cleancodeapplied.usecases.codecastSummaries;
 
 import com.example.cleancodeapplied.Context;
 import com.example.cleancodeapplied.TestSetup;
-import com.example.cleancodeapplied.Utils;
 import com.example.cleancodeapplied.entities.Codecast;
 import com.example.cleancodeapplied.entities.License;
 import com.example.cleancodeapplied.entities.User;
@@ -72,11 +71,12 @@ public class CodecastSummariesStepdefs {
 
     @And("with licence for {string} able to view {string}")
     public void createLicenceForUserOnVideo(String userName, String codecastTitle) {
-        User user = Context.userGateway.findUserByName(userName);
-        Codecast codecast = Context.codecastGateway.findCodecastByTitle(codecastTitle);
-        License licence = new License(VIEW, user, codecast);
-        Context.licenseGateway.save(licence);
-        assertThat(useCase.isLicensedFor(VIEW, user, codecast)).isTrue();
+        createLicence(userName, codecastTitle, VIEW);
+    }
+
+    @And("with licence for {string} able to download {string}")
+    public void withLicenceForAbleToDownload(String userName, String codecastTitle) {
+        createLicence(userName, codecastTitle, DOWNLOAD);
     }
 
     @Then("then the following codecasts will be presented for {string}")
@@ -87,6 +87,14 @@ public class CodecastSummariesStepdefs {
         List<CodecastSummariesViewModel.ViewableCodecastSummary> actuallyPresentedCodecasts = presenter.getViewModel().viewableCodecastSummaries;
         DataTable actuallyPresentedCodecastsDatatable = convertToCucumberDatatable(actuallyPresentedCodecasts);
         expectedPresentedCodecastsInOrder.diff(actuallyPresentedCodecastsDatatable);
+    }
+
+    private void createLicence(String userName, String codecastTitle, License.Type licenseType) {
+        User user = Context.userGateway.findUserByName(userName);
+        Codecast codecast = Context.codecastGateway.findCodecastByTitle(codecastTitle);
+        License licence = new License(licenseType, user, codecast);
+        Context.licenseGateway.save(licence);
+        assertThat(CodecastSummariesUseCase.isLicensedFor(licenseType, user, codecast)).isTrue();
     }
 
     private DataTable convertToCucumberDatatable(List<CodecastSummariesViewModel.ViewableCodecastSummary> actuallyPresentedCodecasts) {
@@ -105,15 +113,6 @@ public class CodecastSummariesStepdefs {
         actuallyPresentedCodecastsAsList.addAll(collect);
 
         return DataTable.create(actuallyPresentedCodecastsAsList);
-    }
-
-    @And("with licence for {string} able to download {string}")
-    public void withLicenceForAbleToDownload(String userName, String codecastTitle) {
-        User user = Context.userGateway.findUserByName(userName);
-        Codecast codecast = Context.codecastGateway.findCodecastByTitle(codecastTitle);
-        License licence = new License(DOWNLOAD, user, codecast);
-        Context.licenseGateway.save(licence);
-        assertThat(useCase.isLicensedFor(DOWNLOAD, user, codecast)).isTrue();
     }
 
     @DataTableType

@@ -18,10 +18,9 @@ public class CodecastSummariesController implements Controller {
     }
 
     @Override
-    public String handle(ParsedRequest request) {
+    public String handle(ParsedRequest request) throws Exception {
         usecase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser(), presenter);
-        view.generateView(presenter.getViewModel());
-        return null;
+        return view.generateView(presenter.getViewModel());
     }
 
 }

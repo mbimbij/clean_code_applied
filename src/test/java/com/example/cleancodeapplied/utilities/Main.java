@@ -7,6 +7,9 @@ import com.example.cleancodeapplied.http.Router;
 import com.example.cleancodeapplied.socketserver.SocketServer;
 import com.example.cleancodeapplied.socketserver.SocketService;
 import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesController;
+import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesPresenter;
+import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesUseCase;
+import com.example.cleancodeapplied.usecases.codecastSummaries.CodecastSummariesViewImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +23,11 @@ public class Main {
     private static Router router = new Router();
 
     public static void main(String[] args) throws IOException {
-        router.addPath("", new CodecastSummariesController(null, null, null));
+        CodecastSummariesUseCase usecase = new CodecastSummariesUseCase();
+        CodecastSummariesPresenter presenter = new CodecastSummariesPresenter();
+        CodecastSummariesViewImpl view = new CodecastSummariesViewImpl();
+        CodecastSummariesController controller = new CodecastSummariesController(usecase, presenter, view);
+        router.addPath("", controller);
 //        router.addPath("episode", new CodecastDetailsController());
 
         TestSetup.setupSampleData();
