@@ -1,7 +1,7 @@
 package com.example.cleancodeapplied.usecases.codecastDetails;
 
-import com.example.cleancodeapplied.usecases.codecastSummaries.CodecaseSummariesViewModel;
+import com.example.cleancodeapplied.usecases.codecastSummaries.CodecaseSummariesResponseModel;
 
-public class PresentableCodecastDetails extends CodecaseSummariesViewModel {
+public class PresentableCodecastDetails extends CodecaseSummariesResponseModel {
     public boolean wasFound;
 }

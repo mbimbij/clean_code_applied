@@ -78,12 +78,12 @@ public class CodecastSummariesStepdefs {
     public void thenTheFollowingCodecastsWillBePresentedFor(String expectedUserName
             , DataTable expectedPresentedCodecastsInOrder
     ) {
-        List<CodecaseSummariesViewModel> actuallyPresentedCodecasts = useCase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser());
+        List<CodecaseSummariesResponseModel> actuallyPresentedCodecasts = useCase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser());
         DataTable actuallyPresentedCodecastsDatatable = convertToCucumberDatatable(actuallyPresentedCodecasts);
         expectedPresentedCodecastsInOrder.diff(actuallyPresentedCodecastsDatatable);
     }
 
-    private DataTable convertToCucumberDatatable(List<CodecaseSummariesViewModel> actuallyPresentedCodecasts) {
+    private DataTable convertToCucumberDatatable(List<CodecaseSummariesResponseModel> actuallyPresentedCodecasts) {
         List<List<String>> actuallyPresentedCodecastsAsList = new ArrayList<>();
         actuallyPresentedCodecastsAsList.add(Arrays.asList("title", "publicationDate", "viewable", "downloadable"));
 

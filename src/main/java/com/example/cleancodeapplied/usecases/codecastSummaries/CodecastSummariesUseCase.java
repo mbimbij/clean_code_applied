@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class CodecastSummariesUseCase {
 
-    public List<CodecaseSummariesViewModel> summarizeCodecasts(User loggedInUser) {
+    public List<CodecaseSummariesResponseModel> summarizeCodecasts(User loggedInUser) {
         return Context.codecastGateway.findAllCodeCastsSortedByDateAsc().stream()
                 .map(codecast -> CodecastSummariesPresenter.formatCodecast(loggedInUser, codecast))
                 .collect(Collectors.toList());

@@ -8,7 +8,7 @@ import static com.example.cleancodeapplied.entities.License.Type.DOWNLOAD;
 import static com.example.cleancodeapplied.entities.License.Type.VIEW;
 
 public class CodecastSummariesPresenter {
-    public static void formatSummaryFields(User loggedInUser, Codecast codecast, CodecaseSummariesViewModel presentableCodecast) {
+    public static void formatSummaryFields(User loggedInUser, Codecast codecast, CodecaseSummariesResponseModel presentableCodecast) {
         presentableCodecast.title = codecast.getTitle();
         presentableCodecast.publicationDate = codecast.getPublicationDate().format(Utils.DATE_FORMAT);
         presentableCodecast.isViewable = CodecastSummariesUseCase.isLicensedFor(VIEW, loggedInUser, codecast);
@@ -16,8 +16,8 @@ public class CodecastSummariesPresenter {
         presentableCodecast.permalink = codecast.getPermalink();
     }
 
-    public static CodecaseSummariesViewModel formatCodecast(User loggedInUser, Codecast codecast) {
-        CodecaseSummariesViewModel presentableCodecast = new CodecaseSummariesViewModel();
+    public static CodecaseSummariesResponseModel formatCodecast(User loggedInUser, Codecast codecast) {
+        CodecaseSummariesResponseModel presentableCodecast = new CodecaseSummariesResponseModel();
         formatSummaryFields(loggedInUser, codecast, presentableCodecast);
         return presentableCodecast;
     }
