@@ -30,12 +30,12 @@ import static org.assertj.core.api.Assertions.fail;
 public class CodecastSummariesStepdefs {
     private ObjectMapper objectMapper = new ObjectMapper();
     private CodecastSummariesUseCase useCase = new CodecastSummariesUseCase();
-    private CodecastSummariesOutputBoundarySpy presenterSpy;
+    private CodecastSummariesOutputBoundary presenter;
 
     @Before
     public void setUp() {
         TestSetup.setupContext();
-        presenterSpy = new CodecastSummariesOutputBoundarySpy();
+        presenter = new CodecastSummariesPresenter();
     }
 
 
@@ -65,9 +65,9 @@ public class CodecastSummariesStepdefs {
 
     @And("there will be no codecasts presented")
     public void thereWillBeNoCodecastsPresented() {
-        useCase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser(), presenterSpy);
-        List<CodecastSummary> codecastSummaries = presenterSpy.responseModel.getCodecastSummaries();
-        assertThat(codecastSummaries).isEmpty();
+        useCase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser(), presenter);
+        List<CodecastSummariesViewModel.ViewableCodecastSummary> viewableCodecastSummaries = presenter.getViewModel().viewableCodecastSummaries;
+        assertThat(viewableCodecastSummaries).isEmpty();
     }
 
     @And("with licence for {string} able to view {string}")
@@ -83,20 +83,20 @@ public class CodecastSummariesStepdefs {
     public void thenTheFollowingCodecastsWillBePresentedFor(String expectedUserName
             , DataTable expectedPresentedCodecastsInOrder
     ) {
-        useCase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser(), presenterSpy);
-        List<CodecastSummary> actuallyPresentedCodecasts = presenterSpy.responseModel.getCodecastSummaries();
+        useCase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser(), presenter);
+        List<CodecastSummariesViewModel.ViewableCodecastSummary> actuallyPresentedCodecasts = presenter.getViewModel().viewableCodecastSummaries;
         DataTable actuallyPresentedCodecastsDatatable = convertToCucumberDatatable(actuallyPresentedCodecasts);
         expectedPresentedCodecastsInOrder.diff(actuallyPresentedCodecastsDatatable);
     }
 
-    private DataTable convertToCucumberDatatable(List<CodecastSummary> actuallyPresentedCodecasts) {
+    private DataTable convertToCucumberDatatable(List<CodecastSummariesViewModel.ViewableCodecastSummary> actuallyPresentedCodecasts) {
         List<List<String>> actuallyPresentedCodecastsAsList = new ArrayList<>();
         actuallyPresentedCodecastsAsList.add(Arrays.asList("title", "publicationDate", "viewable", "downloadable"));
 
         List<List<String>> collect = actuallyPresentedCodecasts.stream()
                 .map(presentableCodecast -> Arrays.asList(
                         presentableCodecast.title,
-                        Utils.DATE_FORMAT.format(presentableCodecast.publicationDate),
+                        presentableCodecast.publicationDate,
                         String.valueOf(presentableCodecast.isViewable),
                         String.valueOf(presentableCodecast.isDownloadable)
                         )
