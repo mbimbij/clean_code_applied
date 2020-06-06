@@ -24,4 +24,9 @@ public class CodecastSummariesViewImpl implements CodecastSummariesView {
         frontpageTemplate.replace("codecasts", codecastLines.toString());
         return frontpageTemplate.getHtml();
     }
+
+    @Override
+    public String generateView(CodecaseSummariesResponseModel responseModel) {
+        return null;
+    }
 }

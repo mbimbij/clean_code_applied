@@ -7,13 +7,7 @@ import com.example.cleancodeapplied.http.ParsedRequest;
 public class CodecastSummariesController implements Controller {
     private CodecastSummariesInputBoundary usecase;
     private CodecastSummariesOutputBoundary presenter;
-    private CodecastSummariesViewImpl view;
-
-    public CodecastSummariesController(CodecastSummariesInputBoundary usecase,
-                                       CodecastSummariesOutputBoundary presenter,
-                                       CodecastSummariesViewImpl view) {
-        this(usecase, presenter, view);
-    }
+    private CodecastSummariesView view;
 
     public CodecastSummariesController(CodecastSummariesInputBoundary usecase,
                                        CodecastSummariesOutputBoundary presenter,
@@ -26,6 +20,7 @@ public class CodecastSummariesController implements Controller {
     @Override
     public String handle(ParsedRequest request) {
         usecase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser(), presenter);
+        view.generateView(presenter.getResponseModel());
         return null;
     }
 
