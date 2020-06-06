@@ -8,9 +8,9 @@ import com.example.cleancodeapplied.entities.User;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CodecastSummariesUseCase {
+public class CodecastSummariesUseCase implements CodecastSummariesInputBoundary {
 
-    public List<CodecaseSummariesResponseModel> summarizeCodecasts(User loggedInUser) {
+    public List<CodecastSummariesResponseModel> summarizeCodecasts(User loggedInUser) {
         return Context.codecastGateway.findAllCodeCastsSortedByDateAsc().stream()
                 .map(codecast -> CodecastSummariesPresenter.formatCodecast(loggedInUser, codecast))
                 .collect(Collectors.toList());
@@ -23,6 +23,12 @@ public class CodecastSummariesUseCase {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void summarizeCodecasts(User loggedInUser, CodecastSummariesOutputBoundary presenter) {
+        CodecastSummariesResponseModel responseModel = new CodecastSummariesResponseModel();
+        presenter.present(responseModel);
     }
 }
 

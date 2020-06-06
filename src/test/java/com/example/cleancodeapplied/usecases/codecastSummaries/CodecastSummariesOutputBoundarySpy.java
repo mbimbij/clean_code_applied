@@ -1,10 +1,16 @@
 package com.example.cleancodeapplied.usecases.codecastSummaries;
 
 public class CodecastSummariesOutputBoundarySpy implements CodecastSummariesOutputBoundary {
-    public CodecaseSummariesResponseModel responseModel;
+    public CodecastSummariesViewModel viewModel;
+    public CodecastSummariesResponseModel responseModel;
 
     @Override
-    public CodecaseSummariesResponseModel getResponseModel() {
-        return responseModel;
+    public CodecastSummariesViewModel getViewModel() {
+        return viewModel;
+    }
+
+    @Override
+    public void present(CodecastSummariesResponseModel responseModel) {
+        this.responseModel = responseModel;
     }
 }

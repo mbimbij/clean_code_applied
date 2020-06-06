@@ -2,11 +2,11 @@ package com.example.cleancodeapplied.usecases.codecastSummaries;
 
 public class CodecastSummariesViewSpy implements CodecastSummariesView {
     public boolean generateViewWasCalled;
-    public CodecaseSummariesResponseModel responseModel;
+    public CodecastSummariesViewModel viewModel;
 
     @Override
-    public String generateView(CodecaseSummariesResponseModel responseModel) {
-        this.responseModel = responseModel;
+    public String generateView(CodecastSummariesViewModel viewModel) {
+        this.viewModel = viewModel;
         generateViewWasCalled = true;
         return null;
     }

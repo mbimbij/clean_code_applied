@@ -20,7 +20,7 @@ public class CodecastSummariesController implements Controller {
     @Override
     public String handle(ParsedRequest request) {
         usecase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser(), presenter);
-        view.generateView(presenter.getResponseModel());
+        view.generateView(presenter.getViewModel());
         return null;
     }
 

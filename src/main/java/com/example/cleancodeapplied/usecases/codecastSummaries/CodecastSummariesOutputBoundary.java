@@ -1,5 +1,7 @@
 package com.example.cleancodeapplied.usecases.codecastSummaries;
 
 public interface CodecastSummariesOutputBoundary {
-    CodecaseSummariesResponseModel getResponseModel();
+    CodecastSummariesViewModel getViewModel();
+
+    void present(CodecastSummariesResponseModel responseModel);
 }

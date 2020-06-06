@@ -38,13 +38,12 @@ class CodecastSummariesControllerTest {
 
     @Test
     void controllerSendsTheResponseModelToTheView() {
-        CodecaseSummariesResponseModel model = new CodecaseSummariesResponseModel();
-        presenterSpy.responseModel = model;
+        CodecastSummariesViewModel model = new CodecastSummariesViewModel();
 
         ParsedRequest request = new ParsedRequest("GET","blah");
         controller.handle(request);
 
         assertThat(viewSpy.generateViewWasCalled).isTrue();
-        assertThat(viewSpy.responseModel).isEqualTo(presenterSpy.responseModel);
+        assertThat(viewSpy.viewModel).isEqualTo(presenterSpy.viewModel);
     }
 }

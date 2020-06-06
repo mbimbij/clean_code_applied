@@ -5,10 +5,10 @@ import com.example.cleancodeapplied.view.ViewTemplate;
 import java.util.List;
 
 public class CodecastSummariesViewImpl implements CodecastSummariesView {
-    String toHtml(List<CodecaseSummariesResponseModel> presentableCodecasts) throws Exception {
+    String toHtml(List<CodecastSummariesResponseModel> presentableCodecasts) throws Exception {
         ViewTemplate frontpageTemplate = ViewTemplate.fromClasspathResource("html/frontpage.html");
         StringBuilder codecastLines = new StringBuilder();
-        for (CodecaseSummariesResponseModel presentableCodecast : presentableCodecasts) {
+        for (CodecastSummariesResponseModel presentableCodecast : presentableCodecasts) {
             ViewTemplate codecastTemplate = ViewTemplate.fromClasspathResource("html/codecast.html");
             codecastTemplate.replace("title", presentableCodecast.title);
             codecastTemplate.replace("publicationDate", presentableCodecast.publicationDate);
@@ -26,7 +26,7 @@ public class CodecastSummariesViewImpl implements CodecastSummariesView {
     }
 
     @Override
-    public String generateView(CodecaseSummariesResponseModel responseModel) {
+    public String generateView(CodecastSummariesViewModel viewModel) {
         return null;
     }
 }

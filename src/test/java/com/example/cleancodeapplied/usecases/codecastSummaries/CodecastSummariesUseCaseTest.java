@@ -58,7 +58,7 @@ class CodecastSummariesUseCaseTest {
     @Test
     void presentingNoCodecasts() {
         Context.codecastGateway.delete(codecast);
-        List<CodecaseSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
+        List<CodecastSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
         assertThat(presentableCodecasts).isEmpty();
     }
 
@@ -68,8 +68,8 @@ class CodecastSummariesUseCaseTest {
         ZonedDateTime publicationDate = ZonedDateTime.now().plusDays(1);
         codecast.setPublicationDate(publicationDate);
         Context.codecastGateway.save(codecast);
-        List<CodecaseSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
-        CodecaseSummariesResponseModel presentableCodecast = presentableCodecasts.get(0);
+        List<CodecastSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
+        CodecastSummariesResponseModel presentableCodecast = presentableCodecasts.get(0);
         assertThat(presentableCodecast.title).isEqualTo("some title");
         assertThat(presentableCodecast.publicationDate).isEqualTo(publicationDate.format(Utils.DATE_FORMAT));
         assertThat(presentableCodecast.permalink).isEqualTo(permalink);
@@ -78,16 +78,16 @@ class CodecastSummariesUseCaseTest {
 
     @Test
     void presentedCodecastIsNotViewableIfNoLicence() {
-        List<CodecaseSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
-        CodecaseSummariesResponseModel presentableCodecast = presentableCodecasts.get(0);
+        List<CodecastSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
+        CodecastSummariesResponseModel presentableCodecast = presentableCodecasts.get(0);
         assertThat(presentableCodecast.isViewable).isFalse();
     }
 
     @Test
     void presentedCodecastIsViewableIfLicenceExists() {
         Context.licenseGateway.save(new License(VIEW, user, codecast));
-        List<CodecaseSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
-        CodecaseSummariesResponseModel presentableCodecast = presentableCodecasts.get(0);
+        List<CodecastSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
+        CodecastSummariesResponseModel presentableCodecast = presentableCodecasts.get(0);
         assertThat(presentableCodecast.isViewable).isTrue();
     }
 
@@ -95,9 +95,16 @@ class CodecastSummariesUseCaseTest {
     void presentedCodecastIsDownloadableIfDownloadLicenceExists() {
         License downloadLicence = new License(DOWNLOAD, user, codecast);
         Context.licenseGateway.save(downloadLicence);
-        List<CodecaseSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
-        CodecaseSummariesResponseModel presentableCodecast = presentableCodecasts.get(0);
+        List<CodecastSummariesResponseModel> presentableCodecasts = useCase.summarizeCodecasts(user);
+        CodecastSummariesResponseModel presentableCodecast = presentableCodecasts.get(0);
         assertThat(presentableCodecast.isDownloadable).isTrue();
         assertThat(presentableCodecast.isViewable).isFalse();
+    }
+
+    @Test
+    void usecaseWiring() {
+        CodecastSummariesOutputBoundarySpy presenterSpy = new CodecastSummariesOutputBoundarySpy();
+        useCase.summarizeCodecasts(user,presenterSpy);
+        assertThat(presenterSpy.responseModel).isNotNull();
     }
 }
