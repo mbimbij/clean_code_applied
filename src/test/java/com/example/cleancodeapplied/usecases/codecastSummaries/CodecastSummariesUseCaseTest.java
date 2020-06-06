@@ -2,7 +2,6 @@ package com.example.cleancodeapplied.usecases.codecastSummaries;
 
 import com.example.cleancodeapplied.Context;
 import com.example.cleancodeapplied.TestSetup;
-import com.example.cleancodeapplied.Utils;
 import com.example.cleancodeapplied.entities.Codecast;
 import com.example.cleancodeapplied.entities.License;
 import com.example.cleancodeapplied.entities.User;
