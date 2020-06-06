@@ -26,7 +26,7 @@ import static com.example.cleancodeapplied.entities.License.Type.VIEW;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-public class CodecastSummaryStepdefs {
+public class CodecastSummariesStepdefs {
     private ObjectMapper objectMapper = new ObjectMapper();
     private CodecastSummariesUseCase useCase = new CodecastSummariesUseCase();
 
@@ -78,12 +78,12 @@ public class CodecastSummaryStepdefs {
     public void thenTheFollowingCodecastsWillBePresentedFor(String expectedUserName
             , DataTable expectedPresentedCodecastsInOrder
     ) {
-        List<CodecaseSummaryViewModel> actuallyPresentedCodecasts = useCase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser());
+        List<CodecaseSummariesViewModel> actuallyPresentedCodecasts = useCase.summarizeCodecasts(Context.gateKeeper.getLoggedInUser());
         DataTable actuallyPresentedCodecastsDatatable = convertToCucumberDatatable(actuallyPresentedCodecasts);
         expectedPresentedCodecastsInOrder.diff(actuallyPresentedCodecastsDatatable);
     }
 
-    private DataTable convertToCucumberDatatable(List<CodecaseSummaryViewModel> actuallyPresentedCodecasts) {
+    private DataTable convertToCucumberDatatable(List<CodecaseSummariesViewModel> actuallyPresentedCodecasts) {
         List<List<String>> actuallyPresentedCodecastsAsList = new ArrayList<>();
         actuallyPresentedCodecastsAsList.add(Arrays.asList("title", "publicationDate", "viewable", "downloadable"));
 
